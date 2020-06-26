@@ -41,6 +41,8 @@ class SignUp extends React.Component {
         .then(res => res.json())
         .then(user => {
             console.log(user)
+            localStorage.setItem('user', `${user.user.id}` )
+            this.props.setLoggedIn()
             debugger
         })
     }

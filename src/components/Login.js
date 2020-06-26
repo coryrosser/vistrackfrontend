@@ -22,6 +22,23 @@ class Login extends React.Component {
     setPassword = (value) => {
         this.setState({password: value})
     }
+    onLogin = (user) => {
+        debugger
+        fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({user: user})
+        })
+        .then(res => res.json())
+        .then(user => {
+            console.log(user)
+            localStorage.setItem('user', `${user.user.id}` )
+            this.props.setLoggedIn()
+            debugger
+        })
+    }
 
 
     render() {

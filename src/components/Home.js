@@ -12,12 +12,15 @@ const Styles = styled.div`
         height: 100vh;
         width: 100%;
     }
-    .home-row {
-        
+    .brand-p {
+        color: white;
+        text-align: center;
+        margin-right: 11vw;
+        margin-top: 5vh;
     }
     .img {
         height: 350px;
-        margin-top: 25vh;
+        margin-top: 10vh;
     }
     .title-white { 
         color: white;
@@ -36,14 +39,22 @@ const Home = props => {
                     <Col xs={2} />
                     <Col xs={4}>
                         <h1 className='title-white'>VisTrack</h1>
-                        <p>Your new solution
+                        <p className='brand-p'>
+                            Your new solution
                             for data management.
+                        </p>
+                        <p className='brand-p'>
+                            Upload your CSV file and get
+                            instant Data Visualizations
+                        </p>
+                        <p className='brand-p'>
+                            Collaborate on Projects with VisTeams
                         </p>
                     </Col>
                     <Col xs={4}>
                         <Image
-                        className='img'
-                        src='https://user-images.githubusercontent.com/1454752/29993250-51208336-8fcf-11e7-9723-a392f307a98d.jpg'/>
+                        className="img"
+                        src='https://screenshots.codesandbox.io/8xstw.png' />
                     </Col>
                     <Col xs={2} />
 

@@ -48,20 +48,21 @@ const SideNav = (props) => {
                     <a href='/dashboard'>Dashboard</a>
                 </ListGroup.Item>
                 <ListGroup.Item className='item'>
-                    <a href='/home'>Explore</a>
+                    <a href='/'>Explore</a>
                 </ListGroup.Item>
                 <ListGroup.Item className='item'>
-                    <a href='/home'>My Tracks</a>
+                    <a href='/'>My Tracks</a>
                 </ListGroup.Item>
                 <ListGroup.Item className='item'>
-                    <a href='/home'>Create a New Tracker</a>
+                    <a href='/newtracker'>Create a New Tracker</a>
                 </ListGroup.Item>
                 <ListGroup.Item className='item'>
-                    <a href='/home'>VisTeams</a>
+                    <a href='/'>VisTeams</a>
                 </ListGroup.Item>
+                
                 {props.isLoggedIn ?
                 <ListGroup.Item className='item'>
-                    <a href='/home'>Logout</a>
+                    <a href='/'>Logout</a>
                 </ListGroup.Item>
                     :
                 <>

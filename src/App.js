@@ -8,13 +8,17 @@ import Home from './components/Home'
 import SignUp from './components/SignUp'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
+import NewTracker from './components/NewTracker'
 
 class App extends React.Component {
   state = {
     data:[],
     isLoggedIn: false,
   }
-  
+  setLoggedIn = () => {
+    this.setState({isLoggedIn: true},
+      console.log("logged in"))
+  }
   render() {
     return (
       <Row>
@@ -24,17 +28,20 @@ class App extends React.Component {
           <Col xs={10} style={{paddingRight: 0, paddingLeft: 0}}>
           <Router>
                 <Switch>
-                    <Route exact path='/home'>
+                    <Route exact path='/'>
                         <Home />
                     </Route>
                     <Route exact path='/signup'>
-                        <SignUp />
+                        <SignUp setLoggedIn={this.setLoggedIn}/>
                     </Route>
                     <Route exact path='/login'>
-                        <Login />
+                        <Login setLoggedIn={this.setLoggedIn}/>
                     </Route>
                     <Route exact path='/dashboard'>
                         <Dashboard />
+                    </Route>
+                    <Route path='/newtracker'>
+                      <NewTracker/>
                     </Route>
                 </Switch>
             </Router>

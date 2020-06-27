@@ -1,7 +1,5 @@
 import React from 'react';
 import './App.css';
-import { Provider } from 'react-redux'
-import store from './store'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import {Row, Col} from 'react-bootstrap'

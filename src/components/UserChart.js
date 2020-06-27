@@ -38,16 +38,14 @@ class SampleChart extends React.Component {
         }
       })
     }
-
-  
   render() {
     return (
       <Container>
-        {/* <input type='file' name='file' onChange={(e)=> this.handleFileUpload(e)}/> */}
+        
           <Chart
           options={{
             chart: {
-              id: "basic-bar"
+              id: this.props.title
             },
             xaxis: {
               categories: this.props.categories
@@ -60,7 +58,7 @@ class SampleChart extends React.Component {
             name: this.props.name,
             data: this.props.data
           }]}
-          type='bar'
+          type={this.props.type}
           height='90%'
           width='90%'
           />

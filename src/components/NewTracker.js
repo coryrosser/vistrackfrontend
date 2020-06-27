@@ -1,6 +1,5 @@
 import React from 'react'
-import {Row, Col, Form, Button} from 'react-bootstrap'
-import {} from 'recharts'
+import {Row, Col, Form, Button, Dropdown} from 'react-bootstrap'
 import styled from 'styled-components'
 import UserChart from './UserChart'
 
@@ -44,6 +43,11 @@ const Styles = styled.div`
         background: #ebf3f7;
         height: 45vh;
     }
+    .option-col {
+        border: black solid 1px;
+        margin-left: auto;
+        margin-right:auto;
+    }
 `
 
 
@@ -52,6 +56,8 @@ class NewTracker extends React.Component {
         seriesInputs: [],
         categories: [],
         data: [],
+        type: 'bar',
+        title: '',
         name: '',
         value: '',
         Xaxis: '',
@@ -61,7 +67,9 @@ class NewTracker extends React.Component {
     handleInput = (name, value) => {
         this.setState({
             categories: [...this.state.categories, name],
-            data: [...this.state.data, value]
+            data: [...this.state.data, value],
+            name: '',
+            value: '',
         })
     }
 
@@ -91,6 +99,10 @@ class NewTracker extends React.Component {
                         <Form.Group controlId="formBasicEmail">
                         <Form.Label>Tracker Title</Form.Label>
                         <Form.Control
+                        value={this.state.title}
+                        onChange={(e) => {
+                            this.setState({title: e.target.value})
+                        }}
                         placeholder="Enter Title" />
                         </Form.Group>
                         <Form.Group controlId="formBasicEmail">
@@ -157,13 +169,40 @@ class NewTracker extends React.Component {
                 className='content-col'>
                     <Row className='preview-row'>
                         <UserChart 
+                        type={this.state.type}
+                        title={this.state.title}
                         categories={this.state.categories}
                         data={this.state.data}
                         name={this.state.Xaxis}
                         file={this.state.file} />
                     </Row>
                     <Row className='options-row'>
-                    <div>Options! </div>
+                    <Col xs={1}/>
+                    <Col className='option-col' xs={4}>
+                    <Dropdown 
+                    onSelect={(type) => {
+                        console.log(type)
+                        this.setState({type: type})
+                    }}>
+                    <Dropdown.Toggle 
+                    variant="primary" 
+                    id="dropdown-basic">
+                        Select a Visualization type
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item 
+                        eventKey='bar'>Bar</Dropdown.Item>
+                        <Dropdown.Item eventKey='line'>Line</Dropdown.Item>
+                        <Dropdown.Item eventKey='pie'>Pie</Dropdown.Item>
+                    </Dropdown.Menu>
+                    </Dropdown>
+                    </Col>
+                    <Col className='option-col' xs={4}>
+
+                    </Col>
+                    <Col xs={1}/>
+
                     </Row>
                 </Col>
             </Row>

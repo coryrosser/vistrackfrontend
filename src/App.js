@@ -1,7 +1,9 @@
 import React from 'react';
 import './App.css';
-import UserChart from './components/UserChart'
-import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import { Provider } from 'react-redux'
+import store from './store'
+import { connect } from 'react-redux'
+import { BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import {Row, Col} from 'react-bootstrap'
 import SideNav from './components/SideNav'
 import Home from './components/Home'
@@ -10,20 +12,32 @@ import Login from './components/Login'
 import Dashboard from './components/Dashboard'
 import NewTracker from './components/NewTracker'
 
+
 class App extends React.Component {
-  state = {
-    data:[],
-    isLoggedIn: false,
+  // state = {
+  //   data:[],
+  //   isLoggedIn: false,
+  // }
+  // setLoggedIn = () => {
+  //   this.setState({isLoggedIn: true},
+  //     console.log("logged in"))
+  // }
+
+  componentDidMount() {
+    fetch('http://localhost:3000/users')
+    .then(res => res.json())
+    .then(userData => {
+      console.log(userData)
+      this.props.fetchUsers(userData)
+      console.log(this.props.users)
+    })
   }
-  setLoggedIn = () => {
-    this.setState({isLoggedIn: true},
-      console.log("logged in"))
-  }
+  
   render() {
     return (
-      <Row>
+        <Row>
           <Col xs={2} style={{paddingRight: 0, paddingLeft: 0}}>
-          <SideNav isLoggedIn={this.state.isLoggedIn}/>
+          <SideNav />
           </Col>
           <Col xs={10} style={{paddingRight: 0, paddingLeft: 0}}>
           <Router>
@@ -32,10 +46,10 @@ class App extends React.Component {
                         <Home />
                     </Route>
                     <Route exact path='/signup'>
-                        <SignUp setLoggedIn={this.setLoggedIn}/>
+                        <SignUp/>
                     </Route>
                     <Route exact path='/login'>
-                        <Login setLoggedIn={this.setLoggedIn}/>
+                        <Login/>
                     </Route>
                     <Route exact path='/dashboard'>
                         <Dashboard />
@@ -51,4 +65,15 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchUsers: (users) => dispatch({ type: 'FETCH_USERS', users: users })
+  }
+}
+const mapStateToProps = (state) => {
+  return {
+    users: state.userReducer.users
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

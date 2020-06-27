@@ -1,6 +1,8 @@
 import React from 'react'
 import { Form, Button } from 'react-bootstrap'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 const Styles = styled.div`
     max-width: 75vw;
@@ -23,7 +25,6 @@ class Login extends React.Component {
         this.setState({password: value})
     }
     onLogin = (user) => {
-        debugger
         fetch('http://localhost:3000/login', {
             method: 'POST',
             headers: {
@@ -33,10 +34,9 @@ class Login extends React.Component {
         })
         .then(res => res.json())
         .then(user => {
-            console.log(user)
             localStorage.setItem('user', `${user.user.id}` )
-            this.props.setLoggedIn()
-            debugger
+            this.props.sendLogin(user)
+            this.props.history.push('/dashboard')
         })
     }
 
@@ -47,8 +47,7 @@ class Login extends React.Component {
                 <Form
             onSubmit={e => {
                 e.preventDefault()
-                console.log(this.state)
-                //props.userLogin(this.state)
+                this.onLogin(this.state)
             }}
             >
                 <Form.Group controlId="formBasicEmail">
@@ -82,4 +81,11 @@ class Login extends React.Component {
     }
 }
 
-export default Login
+const mapDispatchToProps = dispatch => {
+    return {
+        sendLogin: user => dispatch({type: 'LOGIN', user: user})
+    } 
+}
+
+
+export default withRouter(connect(null, mapDispatchToProps)(Login))

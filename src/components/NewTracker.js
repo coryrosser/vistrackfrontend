@@ -1,7 +1,8 @@
 import React from 'react'
-import {Row, Col, Form, ListGroup, Image, Button} from 'react-bootstrap'
+import {Row, Col, Form, ListGroup, Image, Button, ButtonGroup} from 'react-bootstrap'
 import {} from 'recharts'
 import styled from 'styled-components'
+import UserChart from './UserChart'
 
 const Styles = styled.div`
     background: #ebf3f7;
@@ -28,6 +29,7 @@ const Styles = styled.div`
         height: 95vh;
         text-align: center;
         color: white;
+        overflow-y: scroll;
     }
     .content-col {
         background:black;
@@ -48,24 +50,59 @@ const Styles = styled.div`
 class NewTracker extends React.Component {
     state={
         seriesInputs: [],
-        seriesId: 0,
+        Xaxis: '',
+        seriesVal1: '',
+        seriesName1: '',
+        seriesVal2: '',
+        seriesName2: '',
+        seriesVal3: '',
+        seriesName3: '',
+        seriesVal4: '',
+        seriesName4: '',
+        seriesVal5: '',
+        seriesName5: '',
+        seriesVal6: '',
+        seriesName6: '',
     }
+    Tracker = [
+        {
+            name: this.state.seriesName1,
+            [this.state.Xaxis]: this.state.seriesVal1
 
-    addSeriesInput = (num) => {
-        this.setState(
-            {seriesInputs: [...this.state.seriesInputs, `series${this.state.seriesId}`], 
-            seriesId: this.state.seriesId + 1})
-        this.renderInputs(this.state.seriesInputs)
+        },
+        {
+            name: this.state.seriesName2,
+            [this.state.Xaxis]: this.state.seriesVal2
+
+        },
+        {
+            name: this.state.seriesName3,
+            [this.state.Xaxis]: this.state.seriesVal3
+
+        },
+        {
+            name: this.state.seriesName4,
+            [this.state.Xaxis]: this.state.seriesVal4
+
+        },
+        {
+            name: this.state.seriesName5,
+            [this.state.Xaxis]: this.state.seriesVal5
+
+        },
+        {
+            name: this.state.seriesName6,
+            [this.state.Xaxis]: this.state.seriesVal6
+
+        }
+    ]
+
+    submitTrackerForm = (e, obj) => {
+        console.log(e.target)
+        debugger
     }
-    renderInputs = (arr) => {
-        arr.forEach(entry =>{
-            return (
-                <Form.Group controlId="formBasicSeries">
-                <Form.Control
-                placeholder="Enter Data" />
-                </Form.Group>
-            )
-        })
+    handleFileUpload = (file) => {
+        this.setState({file: file})
     }
 
     render() {
@@ -78,35 +115,144 @@ class NewTracker extends React.Component {
                 <Col 
                 xs={3}
                 className='form-col'>
-                    <Form className='tracker-form'>
+                    <Form 
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        this.submitTrackerForm(e, this.state)}}
+                    className='tracker-form'>
                         <Form.Group controlId="formBasicEmail">
                         <Form.Label>Tracker Title</Form.Label>
                         <Form.Control
-                        placeholder="Enter email" />
+                        placeholder="Enter Title" />
                         </Form.Group>
                         <Form.Group controlId="formBasicEmail">
                         <Form.Label>X-Axis Title</Form.Label>
                         <Form.Control
-                        placeholder="Enter email" />
+                            value={this.state.Xaxis}
+                            onChange={(e) => this.setState({Xaxis: e.target.value})}
+                        placeholder="Enter Title" />
                         </Form.Group>
-                        <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Email address</Form.Label>
+                        <Form.Row>
+                        <Form.Group as={Col} controlId="formBasicEmail">
+                        <Form.Label>X-Axis Labels</Form.Label>
                         <Form.Control
-                        placeholder="Enter email" />
+                            value={this.state.seriesName1}
+                            onChange={(e) => this.setState({seriesName1: e.target.value})}
+                        placeholder="Enter Label" />
                         </Form.Group>
-                        
-                        {this.renderInputs(this.state.seriesInputs)}
-                        <Button onClick={() => this.addSeriesInput()} />
+                        <Form.Group as={Col} controlId="formBasicEmail">
+                        <Form.Label>X-Axis Data Values</Form.Label>
+                        <Form.Control
+                            value={this.state.seriesVal1}
+                            onChange={(e) => this.setState({seriesVal1: e.target.value})}
+                        placeholder="Enter Data" />
+                        </Form.Group>
 
+                        </Form.Row>
+                        <Form.Row>
+                            <Form.Group as={Col} controlId="formBasicEmail">
+                            <Form.Control
+                            value={this.state.seriesName2}
+                            onChange={(e) => this.setState({seriesName2: e.target.value})}
+                            placeholder="Enter Label" />
+                            </Form.Group>
 
+                            <Form.Group as={Col} controlId="formBasicEmail">
+                            <Form.Control
+                            value={this.state.seriesVal2}
+                            onChange={(e) => this.setState({seriesVal2: e.target.value})}
+                            placeholder="Enter Data" />
+                            </Form.Group>
+                        </Form.Row>
+                        <Form.Row>
 
-                    </Form>
+                            <Form.Group as={Col} controlId="formBasicEmail">
+                            <Form.Control
+                            value={this.state.seriesName3}
+                            onChange={(e) => this.setState({seriesName3: e.target.value})}
+                            placeholder="Enter Label" />
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formBasicEmail">
+                            <Form.Control
+                            value={this.state.seriesVal3}
+                            onChange={(e) => this.setState({seriesVal3: e.target.value})}
+                            placeholder="Enter Data" />
+                            </Form.Group>
+                        </Form.Row>
+                        <Form.Row>
+                            <Form.Group as={Col} controlId="formBasicEmail">
+                            <Form.Control
+                            value={this.state.seriesName4}
+                            onChange={(e) => this.setState({seriesName4: e.target.value})}
+                            placeholder="Enter Label" />
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formBasicEmail">
+                            <Form.Control
+                            value={this.state.seriesVal4}
+                            onChange={(e) => this.setState({seriesVal4: e.target.value})}
+                            placeholder="Enter Data" />
+                            </Form.Group>
+                        </Form.Row>
+                        <Form.Row>
+                            <Form.Group as={Col} controlId="formBasicEmail">
+                            <Form.Control
+                            value={this.state.seriesName5}
+                            onChange={(e) => this.setState({seriesName5: e.target.value})}
+                            placeholder="Enter Label" />
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formBasicEmail">
+                            <Form.Control
+                            value={this.state.seriesVal5}
+                            onChange={(e) => this.setState({seriesVal5: e.target.value})}
+                            placeholder="Enter Data" />
+                            </Form.Group>
+                        </Form.Row>
+                        <Form.Row>
+                            <Form.Group as={Col} controlId="formBasicEmail">
+                            <Form.Control
+                            value={this.state.seriesName6}
+                            onChange={(e) => this.setState({seriesName6: e.target.value})}
+                            placeholder="Enter Label" />
+                            </Form.Group>
+                            <Form.Group as={Col} controlId="formBasicEmail">
+                            <Form.Control
+                            value={this.state.seriesVal6}
+                            onChange={(e) => this.setState({seriesVal6: e.target.value})}
+                            placeholder="Enter Data" />
+                            </Form.Group>
+                        </Form.Row>
+                        {/* <Button 
+                        size='sm'
+                        onClick={(e) => this.addSeriesInput(e)} >
+                        Add Field
+                        </Button> */}
+                        <Row>
+                        <Button 
+                        type='submit'
+                        className='ml-auto mr-auto mt-4'>
+                            Create Tracker
+                        </Button>
+                        </Row>
+                        </Form>
+                        <Form className='tracker-form mt-5'>
+                            <Form.Group>
+                                <Form.Control
+                                className='btn btn-sm btn-primary'
+                                type='file'
+                                onChange={e => {
+                                    e.preventDefault()
+                                    this.handleFileUpload(e)
+                                }}
+                                />
+                            </Form.Group>
+                        </Form>
+
                 </Col>
                 <Col 
                 xs={9}
                 className='content-col'>
                     <Row className='preview-row'>
-                        <div> Preview!</div>
+                        <UserChart file={this.state.file} />
                     </Row>
                     <Row className='options-row'>
                     <div>Options! </div>

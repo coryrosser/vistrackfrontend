@@ -1,5 +1,6 @@
 import React from 'react';
 import Papa from 'papaparse'
+import { Container } from 'react-bootstrap'
 
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
@@ -36,8 +37,7 @@ class SampleChart extends React.Component {
   
   render() {
     return (
-      <div>
-        <h1>Example File Upload to Chart SampleChart</h1>
+      <Container>
         <input type='file' name='file' onChange={(e)=> this.handleFileUpload(e)}/>
         {this.state.data.length > 1 ? 
           <LineChart
@@ -60,7 +60,7 @@ class SampleChart extends React.Component {
           <h1>No Data To Display...</h1>
       
       }
-      </div>
+      </Container>
     )
   }
 }

@@ -1,6 +1,7 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Form, Button, Col } from 'react-bootstrap'
-
+import { withRouter } from 'react-router-dom'
 class SignUp extends React.Component {
 
     state={
@@ -30,20 +31,18 @@ class SignUp extends React.Component {
         this.setState({role: parseInt(value)})
     }
     submitUserSignup = user => {
-        debugger
         fetch('http://localhost:3000/users', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({user: user})
         })
         .then(res => res.json())
         .then(user => {
-            console.log(user)
-            localStorage.setItem('user', `${user.user.id}` )
-            this.props.setLoggedIn()
             debugger
+            this.props.createUser(user)
+            localStorage.setItem('user', user)
+            console.log(this.props.current_user)
+            this.props.history.push('/dashboard')
         })
     }
 
@@ -123,4 +122,17 @@ class SignUp extends React.Component {
     }
 }
 
-export default SignUp
+
+const mapDispatchToProps = dispatch => {
+    return {
+        createUser: (user) => dispatch({type: 'CREATE_USER', user: user})
+    }
+
+}
+const mapStateToProps = state => {
+    return {
+        current_user: state.userReducer.current_user
+    }
+    
+}
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignUp))

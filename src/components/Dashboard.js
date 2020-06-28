@@ -1,4 +1,7 @@
 import React from 'react'
+import {connect} from 'react-redux'
+import UserChart from './UserChart'
+import DashTable from './DashTable'
 import {Row, Col, ListGroup, Card} from 'react-bootstrap'
 import styled from 'styled-components'
 
@@ -7,6 +10,7 @@ const Styles = styled.div`
     .quick-view-row {
         margin-top: 2vh;
         margin-bottom: 2.4vh;
+        height: 21.7vh;
     }
     .title-row {
         width: 100%;
@@ -32,57 +36,56 @@ const Styles = styled.div`
     }
 `
 
-const Dashboard = props => {
-    return (
+class Dashboard extends React.Component {
+    state ={
+        datasets: [],
+    }
+    componentDidMount () {
+        console.log(this.props)
+    }
+
+    renderQuickView = (datasets) => {
+        console.log(datasets)
+        return datasets.map(entry => {
+            let names = entry.dataset_series.map((series) => {
+                return series.name
+            })
+            let points = entry.dataset_series.map((series) => {
+                return series.data
+            })
+            return (
+                <Col>
+                    <Card>
+                        <Card.Body>
+                            <UserChart 
+                            type={entry.chart_type}
+                            title={entry.title}
+                            categories={names}
+                            data={points}
+                            /> 
+                        </Card.Body>
+                    </Card>
+                </Col>
+            )
+        })
+    }
+
+    render()
+    {return (
         <Styles>
             <Row className='title-row'>
                 <div className='title-text'>Recent Trackers</div>
             </Row>
             <Row className='quick-view-row justify-content-center'>
-                <Col/>
-                <Col>
-                <Card style={{ width: '18rem' }}>
-                <Card.Body>
-                    <Card.Title>Card Title</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-                    <Card.Text>
-                    Some quick example text to build on the card title and make up the bulk of
-                    the card's content.
-                    </Card.Text>
-                    <Card.Link href="#">Card Link</Card.Link>
-                    <Card.Link href="#">Another Link</Card.Link>
-                </Card.Body>
-                </Card>
-                </Col>
-                <Col>
-                <Card style={{ width: '18rem' }}>
-                <Card.Body>
-                    <Card.Title>Card Title</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-                    <Card.Text>
-                    Some quick example text to build on the card title and make up the bulk of
-                    the card's content.
-                    </Card.Text>
-                    <Card.Link href="#">Card Link</Card.Link>
-                    <Card.Link href="#">Another Link</Card.Link>
-                </Card.Body>
-                </Card>
-                </Col>
-                <Col>
-                <Card style={{ width: '18rem' }}>
-                <Card.Body>
-                    <Card.Title>Card Title</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-                    <Card.Text>
-                    Some quick example text to build on the card title and make up the bulk of
-                    the card's content.
-                    </Card.Text>
-                    <Card.Link href="#">Card Link</Card.Link>
-                    <Card.Link href="#">Another Link</Card.Link>
-                </Card.Body>
-                </Card>
-                </Col>
-                <Col/>
+                
+
+            {this.props.datasets ?
+
+            this.renderQuickView(this.props.datasets)
+            
+            :   
+                <p>Loading</p>}
+
             </Row>
             <Row className='title-row'>
                 <div className='title-text'>Control Center</div>
@@ -91,7 +94,7 @@ const Dashboard = props => {
                 <Col />
                     <Col xs={5}>
                         <div className='control-panel'>
-                            Control Panel Here
+                            <DashTable />
                         </div>
                     </Col>
                     <Col xs={5}>
@@ -102,7 +105,13 @@ const Dashboard = props => {
                 <Col />
             </Row>
         </Styles>
-    )
+    )}
+}
+const mapStateToProps = (state) => {
+    return {
+        datasets: state.dataReducer.datasets,
+        users: state.userReducer.users
+    }
 }
 
-export default Dashboard
+export default connect(mapStateToProps, null)(Dashboard)

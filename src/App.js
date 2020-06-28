@@ -20,14 +20,32 @@ class App extends React.Component {
   //   this.setState({isLoggedIn: true},
   //     console.log("logged in"))
   // }
+  componentWillMount() {
+    localStorage.getItem('user') ?
 
+      this.props.setLoggedIn()
+        :
+      console.log('log in to continue')
+  }
   componentDidMount() {
+    this.getUsers()
+    this.getDataSets()
+  }
+
+  getUsers = () => {
     fetch('http://localhost:3000/users')
     .then(res => res.json())
     .then(userData => {
-      console.log(userData)
       this.props.fetchUsers(userData)
       console.log(this.props.users)
+    })
+  }
+  getDataSets = () => {
+    fetch('http://localhost:3000/datasets')
+    .then(res => res.json())
+    .then(data => {
+        console.log(data)
+        this.props.fetchDatasets(data)
     })
   }
   
@@ -65,12 +83,16 @@ class App extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchUsers: (users) => dispatch({ type: 'FETCH_USERS', users: users })
+    fetchUsers: (users) => dispatch({ type: 'FETCH_USERS', users: users }),
+    setLoggedIn: () => dispatch({type: 'SET_LOGIN'}),
+    fetchDatasets: (datasets) => dispatch({type: 'FETCH_DATASETS', datasets: datasets})
   }
 }
 const mapStateToProps = (state) => {
   return {
-    users: state.userReducer.users
+    users: state.userReducer.users,
+    isLoggedIn: state.userReducer.isLoggedIn,
+    
   }
 }
 

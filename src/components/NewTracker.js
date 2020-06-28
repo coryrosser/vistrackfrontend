@@ -3,6 +3,7 @@ import {Row, Col, Form, Button, Dropdown} from 'react-bootstrap'
 import styled from 'styled-components'
 import UserChart from './UserChart'
 import {SketchPicker} from 'react-color'
+import { withRouter } from 'react-router-dom'
 
 const Styles = styled.div`
     background: #ebf3f7;
@@ -104,6 +105,7 @@ class NewTracker extends React.Component {
         .then(res => res.json())
         .then(dataset => {
             console.log(dataset)
+            this.props.history.push('/dashboard')
         })
     }
     handleFileUpload = (file) => {
@@ -198,7 +200,7 @@ class NewTracker extends React.Component {
                 className='content-col'>
                     <Row className='preview-row'>
                         <UserChart 
-                        colors={this.state.colors.slice(1, this.state.colors.length)}
+                        
                         type={this.state.type}
                         title={this.state.title}
                         categories={this.state.categories}
@@ -210,7 +212,7 @@ class NewTracker extends React.Component {
                     <Col className='option-col' xs={4}>
                     
                     <Row>
-                    {/* <Dropdown 
+                    <Dropdown 
                     onSelect={(type) => {
                         console.log(type)
                         this.setState({type: type})
@@ -229,12 +231,12 @@ class NewTracker extends React.Component {
                     </Dropdown.Menu>
                     </Dropdown>
                     </Row>
-                    <Row> */}
-                    {/* <SketchPicker
+                    {/*<Row>
+                    <SketchPicker
                     color={ this.state.color }
                     onChangeComplete={(e)=> this.handleChangeComplete(e) }
-                    /> */}
-                    </Row>
+                    /> 
+                    </Row>*/}
                     </Col>
                     <Col className='option-col' xs={4}>
 

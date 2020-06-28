@@ -1,29 +1,22 @@
-import { FETCH_USERS, LOGIN, LOGOUT, CREATE_USER } from '../actions/types'
-
 export default (state = {}, action) => {
     switch (action.type) {
         
-        case FETCH_USERS:
+        case 'FETCH_DATASETS':
             return {
                 ...state,
-                users: action.users
+                datasets: action.datasets
             }
-        case LOGIN:
+        case 'EDIT_DATASET':
             return {
                 ...state,
                 isLoggedIn: true,
-                current_user: action.user
-            }
-        case 'SET_LOGIN':
-            return {
-                ...state,
-                isLoggedIn: true,
+                current_dataset: action.dataset
             }
         // case LOGOUT:
         //     return (
 
         //     )
-        case CREATE_USER:
+        case 'CREATE_DATASET':
             return {
                 ...state,
                 isLoggedIn: true,

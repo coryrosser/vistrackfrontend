@@ -40,7 +40,7 @@ class SignUp extends React.Component {
         .then(user => {
             debugger
             this.props.createUser(user)
-            localStorage.setItem('user', user)
+            localStorage.setItem('user', user.user.id)
             console.log(this.props.current_user)
             this.props.history.push('/dashboard')
         })

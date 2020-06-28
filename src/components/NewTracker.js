@@ -2,6 +2,7 @@ import React from 'react'
 import {Row, Col, Form, Button, Dropdown} from 'react-bootstrap'
 import styled from 'styled-components'
 import UserChart from './UserChart'
+import {SketchPicker} from 'react-color'
 
 const Styles = styled.div`
     background: #ebf3f7;
@@ -61,6 +62,16 @@ class NewTracker extends React.Component {
         name: '',
         value: '',
         Xaxis: '',
+        colors: [],
+        color: '#fff'
+    }
+
+    handleChangeComplete = (e) => {
+        console.log(e)
+        this.setState({
+            colors: [...this.state.colors, e.hex]
+        }, 
+        console.log(this.state.colors))
     }
 
 
@@ -73,9 +84,27 @@ class NewTracker extends React.Component {
         })
     }
 
-    submitTrackerForm = (e, obj) => {
-        console.log(e.target)
-        debugger
+    submitTrackerForm = () => {
+        let obj = {
+            dataset: 
+            {
+                title: this.state.title,
+            chart_type: this.state.type
+            },
+            dataset_categories: [...this.state.categories],
+            dataset_series: [...this.state.data]
+        }
+        fetch('http://localhost:3000/datasets', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(obj)
+        })
+        .then(res => res.json())
+        .then(dataset => {
+            console.log(dataset)
+        })
     }
     handleFileUpload = (file) => {
         this.setState({file: file})
@@ -94,7 +123,7 @@ class NewTracker extends React.Component {
                     <Form 
                     onSubmit={(e) => {
                         e.preventDefault()
-                        this.submitTrackerForm(e, this.state)}}
+                        this.submitTrackerForm()}}
                     className='tracker-form'>
                         <Form.Group controlId="formBasicEmail">
                         <Form.Label>Tracker Title</Form.Label>
@@ -152,14 +181,14 @@ class NewTracker extends React.Component {
                         </Form>
                         <Form className='tracker-form mt-5'>
                             <Form.Group>
-                                <Form.Control
+                                {/* <Form.Control
                                 className='btn btn-sm btn-primary'
                                 type='file'
                                 onChange={e => {
                                     e.preventDefault()
                                     this.handleFileUpload(e)
                                 }}
-                                />
+                                /> */}
                             </Form.Group>
                         </Form>
 
@@ -169,17 +198,19 @@ class NewTracker extends React.Component {
                 className='content-col'>
                     <Row className='preview-row'>
                         <UserChart 
+                        colors={this.state.colors.slice(1, this.state.colors.length)}
                         type={this.state.type}
                         title={this.state.title}
                         categories={this.state.categories}
                         data={this.state.data}
-                        name={this.state.Xaxis}
                         file={this.state.file} />
                     </Row>
                     <Row className='options-row'>
                     <Col xs={1}/>
                     <Col className='option-col' xs={4}>
-                    <Dropdown 
+                    
+                    <Row>
+                    {/* <Dropdown 
                     onSelect={(type) => {
                         console.log(type)
                         this.setState({type: type})
@@ -197,6 +228,13 @@ class NewTracker extends React.Component {
                         <Dropdown.Item eventKey='pie'>Pie</Dropdown.Item>
                     </Dropdown.Menu>
                     </Dropdown>
+                    </Row>
+                    <Row> */}
+                    {/* <SketchPicker
+                    color={ this.state.color }
+                    onChangeComplete={(e)=> this.handleChangeComplete(e) }
+                    /> */}
+                    </Row>
                     </Col>
                     <Col className='option-col' xs={4}>
 

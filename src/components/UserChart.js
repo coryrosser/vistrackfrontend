@@ -44,6 +44,7 @@ class SampleChart extends React.Component {
         
           <Chart
           options={{
+            // colors: [...this.props.colors],
             chart: {
               id: this.props.title
             },
@@ -55,7 +56,6 @@ class SampleChart extends React.Component {
             }
           }}
           series={[{
-            name: this.props.name,
             data: this.props.data
           }]}
           type={this.props.type}

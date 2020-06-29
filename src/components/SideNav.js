@@ -1,54 +1,57 @@
 import React from 'react'
 import styled from 'styled-components'
-import {Row, Nav, ListGroup} from 'react-bootstrap'
+import {Row, ListGroup} from 'react-bootstrap'
+import { connect } from 'react-redux'
 
 
 const Styles = styled.div`
-    border: rgb(42, 157, 244, 0.25) solid 1px;
-    height: 100vh;
+border: rgb(42, 157, 244, 0.25) solid 1px;
+height: 100vh;
+text-align: center;
+align-items: center;
+justify-content: center;
+background: rgb(42, 157, 244);
+.brand {
+    color: #f7f7f7;
+    text-decoration: none;
+    font-size: 4rem;
+    margin-top: 5vh;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
-    align-items: center;
-    justify-content: center;
-    background: rgb(42, 157, 244);
-    .brand {
-        color: #f7f7f7;
-        margin-top: 5vh;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
-    }
-    .group {
-        margin-top: 5vh;
+}
+.group {
+    margin-top: 5vh;
+}
+
+.item {
+    color:white;
+    margin-top: 5vh;
+    background: rgb(0, 0, 0, 0.05);
+    border: rgb(42, 157, 244, 0.5) solid 1px;
+    &:hover {
+        background: #ff5733;
+        transition: 0.3s;
     }
 
-    .item {
-        color:white;
-        margin-top: 5vh;
-        background: rgb(0, 0, 0, 0.05);
-        border: rgb(42, 157, 244, 0.5) solid 1px;
-        &:hover {
-            background: #ff5733;
-            transition: 0.3s;
-        }
-
-    }
-    a {
-        color: #f7f7f7;
-    }
+}
+a {
+    color: #f7f7f7;
+}
 `
 
 const SideNav = (props) => {
     return (
         <Styles>
             <Row className='side-brand'>
-                <h1 className='brand'>VisTrack</h1>
+                <a href='/' className='brand'>VisTrack</a>
             </Row>
             <ListGroup className='group'>
                 <ListGroup.Item className='item'>
                     <a href='/dashboard'>Dashboard</a>
                 </ListGroup.Item>
                 <ListGroup.Item className='item'>
-                    <a href='/'>Explore</a>
+                    <a href='/explore'>Explore</a>
                 </ListGroup.Item>
                 <ListGroup.Item className='item'>
                     <a href='/'>My Tracks</a>
@@ -80,6 +83,12 @@ const SideNav = (props) => {
     )
 }
 
-export default SideNav
+const mapStateToProps = (state) => {
+    return {
+        isLoggedIn: state.userReducer.isLoggedIn
+    }
+}
+
+export default connect(mapStateToProps, null)(SideNav)
 
 

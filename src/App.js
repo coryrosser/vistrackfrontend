@@ -5,21 +5,16 @@ import { BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import {Row, Col} from 'react-bootstrap'
 import SideNav from './components/SideNav'
 import Home from './components/Home'
+import Explore from './components/Explore'
 import SignUp from './components/SignUp'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
 import NewTracker from './components/NewTracker'
+import styled from 'styled-components'
 
-
+const Styles = styled.div`
+`
 class App extends React.Component {
-  // state = {
-  //   data:[],
-  //   isLoggedIn: false,
-  // }
-  // setLoggedIn = () => {
-  //   this.setState({isLoggedIn: true},
-  //     console.log("logged in"))
-  // }
   componentWillMount() {
     localStorage.getItem('user') ?
 
@@ -44,15 +39,19 @@ class App extends React.Component {
     fetch('http://localhost:3000/datasets')
     .then(res => res.json())
     .then(data => {
-        console.log(data)
         this.props.fetchDatasets(data)
     })
   }
   
   render() {
     return (
-        <Row>
-          <Col xs={2} style={{paddingRight: 0, paddingLeft: 0}}>
+      <Styles>
+        <Row style={{ marginLeft: 0, marginRight: 0 }}>
+          <Col xs={2} style={{
+            paddingRight: 0, 
+            paddingLeft: 0,
+            marginLeft: 0,
+            }}>
           <SideNav />
           </Col>
           <Col xs={10} style={{paddingRight: 0, paddingLeft: 0}}>
@@ -67,6 +66,9 @@ class App extends React.Component {
                     <Route exact path='/login'>
                         <Login/>
                     </Route>
+                    <Route exact path='/explore'>
+                        <Explore/>
+                    </Route>
                     <Route exact path='/dashboard'>
                         <Dashboard />
                     </Route>
@@ -77,6 +79,8 @@ class App extends React.Component {
             </Router>
           </Col>
       </Row>
+      </Styles>
+
     )
   }
 }

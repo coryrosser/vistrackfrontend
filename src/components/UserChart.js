@@ -1,5 +1,5 @@
 import React from 'react';
-import Papa from 'papaparse'
+// import Papa from 'papaparse'
 import { Container } from 'react-bootstrap'
 import Chart from "react-apexcharts";
 
@@ -17,27 +17,25 @@ class SampleChart extends React.Component {
     show: false
     }
 }
-  componentDidUpdate() {
-  }
-  handleFileUpload = (e) => {
-      Papa.parse(e.target.files[0], {
-        dynamicTyping: true, 
-        header: true,
-        complete: (results) => {
-          console.log('parsing')
-          console.log(results)
-          let firstFive = results.data.slice(0,5)
-          firstFive.map((entry) => {
-            let obj = {
-              name: entry.SchoolName,
-              math: entry.MathematicsMean,
-              reading: entry.CriticalReadingMean
-            }
-            this.setState({data: [...this.state.data, obj]})
-          })
-        }
-      })
-    }
+  // handleFileUpload = (e) => {
+  //     Papa.parse(e.target.files[0], {
+  //       dynamicTyping: true, 
+  //       header: true,
+  //       complete: (results) => {
+  //         console.log('parsing')
+  //         console.log(results)
+  //         let firstFive = results.data.slice(0,5)
+  //         firstFive.map((entry) => {
+  //           let obj = {
+  //             name: entry.SchoolName,
+  //             math: entry.MathematicsMean,
+  //             reading: entry.CriticalReadingMean
+  //           }
+  //           this.setState({data: [...this.state.data, obj]})
+  //         })
+  //       }
+  //     })
+  //   }
   render() {
     return (
       <Container>
@@ -59,8 +57,8 @@ class SampleChart extends React.Component {
             data: this.props.data
           }]}
           type={this.props.type}
-          height='90%'
-          width='90%'
+          height={this.props.inspect ? '350' : 
+                  this.props.quick   ? '200' : '90%'}
           />
       </Container>
     )

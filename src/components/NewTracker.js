@@ -2,7 +2,7 @@ import React from 'react'
 import {Row, Col, Form, Button, Dropdown} from 'react-bootstrap'
 import styled from 'styled-components'
 import UserChart from './UserChart'
-import {SketchPicker} from 'react-color'
+import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
 const Styles = styled.div`
@@ -30,7 +30,6 @@ const Styles = styled.div`
         height: 95vh;
         text-align: center;
         color: white;
-        overflow-y: scroll;
     }
     .content-col {
         background:black;
@@ -84,6 +83,9 @@ class NewTracker extends React.Component {
             value: '',
         })
     }
+    handleTitle = (title) => {
+        this.setState({title: title})
+    }
 
     submitTrackerForm = () => {
         let obj = {
@@ -92,8 +94,9 @@ class NewTracker extends React.Component {
                 title: this.state.title,
             chart_type: this.state.type
             },
-            dataset_categories: [...this.state.categories],
-            dataset_series: [...this.state.data]
+            name: [...this.state.categories],
+            data: [...this.state.data]
+            
         }
         fetch('http://localhost:3000/datasets', {
             method: 'POST',
@@ -105,6 +108,7 @@ class NewTracker extends React.Component {
         .then(res => res.json())
         .then(dataset => {
             console.log(dataset)
+            this.props.addDataset(dataset)
             this.props.history.push('/dashboard')
         })
     }
@@ -132,7 +136,8 @@ class NewTracker extends React.Component {
                         <Form.Control
                         value={this.state.title}
                         onChange={(e) => {
-                            this.setState({title: e.target.value})
+                            console.log(e.target.value)
+                            this.handleTitle(e.target.value)
                         }}
                         placeholder="Enter Title" />
                         </Form.Group>
@@ -250,5 +255,10 @@ class NewTracker extends React.Component {
         )
     }
 }
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addDataset: (dataset) => dispatch({type: 'ADD_DATASET', dataset: dataset})
+    }
+    }
 
-export default NewTracker
+export default withRouter(connect(null, mapDispatchToProps)(NewTracker))

@@ -6,21 +6,20 @@ export default (state = {}, action) => {
                 ...state,
                 datasets: action.datasets
             }
-        case 'EDIT_DATASET':
+        case 'ADD_DATASET':
             return {
                 ...state,
-                isLoggedIn: true,
-                current_dataset: action.dataset
+                datasets: [...state.dataReducer.datasets, action.dataset]
             }
         // case LOGOUT:
         //     return (
 
         //     )
-        case 'CREATE_DATASET':
+        case 'INSPECT':
+            console.log('inspect')
             return {
                 ...state,
-                isLoggedIn: true,
-                current_user: action.user
+                inspectedDataset: action.dataset
             }
         default:
             return state;

@@ -2,7 +2,8 @@ import React from 'react'
 import {connect} from 'react-redux'
 import UserChart from './UserChart'
 import DashTable from './DashTable'
-import {Row, Col, ListGroup, Card} from 'react-bootstrap'
+import InspectPanel from './InspectPanel'
+import {Row, Col, Card} from 'react-bootstrap'
 import styled from 'styled-components'
 
 const Styles = styled.div`
@@ -10,7 +11,8 @@ const Styles = styled.div`
     .quick-view-row {
         margin-top: 2vh;
         margin-bottom: 2.4vh;
-        height: 21.7vh;
+        overflow-x: hidden;
+        height: 30vh;
     }
     .title-row {
         width: 100%;
@@ -19,6 +21,10 @@ const Styles = styled.div`
         height: 5vh;
         color: #f7f7f7;
     }
+    .inspect-alt {
+        text-align: center;
+        color: #222;
+    }
     .title-text {
         margin-left: auto;
         margin-right: auto;
@@ -26,24 +32,27 @@ const Styles = styled.div`
     }
     .control-panel {
         margin-top: 3vh;
-        border: black solid 1px;
+        border: #ddd solid 1px;
         width: 100%;
         height: 50vh;
 
     }
     .control-panel-row {
-        height: 63.7vh;
+        height: 55vh;
+    }
+    .card {
+        text-align:center;
+        height: 25vh;
+        margin-bottom: 2vh;
+        border: #ddd solid 1px;
     }
 `
 
 class Dashboard extends React.Component {
-    state ={
-        datasets: [],
-    }
-    componentDidMount () {
-        console.log(this.props)
-    }
 
+    state={
+        inspected: '',
+    }
     renderQuickView = (datasets) => {
         console.log(datasets)
         return datasets.map(entry => {
@@ -54,29 +63,35 @@ class Dashboard extends React.Component {
                 return series.data
             })
             return (
-                <Col>
-                    <Card>
+                <Col xs={5}>
+                    <Card 
+                    className='card' >
                         <Card.Body>
                             <UserChart 
+                            quick='true'
                             type={entry.chart_type}
-                            title={entry.title}
+                            title={entry.title ? entry.title : "Untitled-Tracker"}
                             categories={names}
                             data={points}
                             /> 
                         </Card.Body>
+                        <Card.Text>
+                            {entry.title}
+                        </Card.Text>
                     </Card>
                 </Col>
-            )
-        })
-    }
+        )})}
+
 
     render()
     {return (
         <Styles>
-            <Row className='title-row'>
+            <Row className='title-row' style={{ marginLeft: 0, marginRight: 0 }}>
                 <div className='title-text'>Recent Trackers</div>
             </Row>
-            <Row className='quick-view-row justify-content-center'>
+            <Row 
+            style={{ marginLeft: 0, marginRight: 0 }}
+            className='quick-view-row justify-content-center'>
                 
 
             {this.props.datasets ?
@@ -87,10 +102,14 @@ class Dashboard extends React.Component {
                 <p>Loading</p>}
 
             </Row>
-            <Row className='title-row'>
+            <Row 
+            style={{ marginLeft: 0, marginRight: 0 }}
+            className='title-row'>
                 <div className='title-text'>Control Center</div>
             </Row>
-            <Row className='control-panel-row'>
+            <Row 
+            style={{ marginLeft: 0, marginRight: 0 }}
+            className='control-panel-row'>
                 <Col />
                     <Col xs={5}>
                         <div className='control-panel'>
@@ -99,7 +118,10 @@ class Dashboard extends React.Component {
                     </Col>
                     <Col xs={5}>
                         <div className='control-panel'>
-                            Inspect Panel Here
+                            {this.props.inspectedDataset ? 
+                            <InspectPanel />
+                                :
+                            <h3 className='inspect-alt'> Click an item on the left to inspect it!</h3>}
                         </div>
                     </Col>
                 <Col />
@@ -110,7 +132,8 @@ class Dashboard extends React.Component {
 const mapStateToProps = (state) => {
     return {
         datasets: state.dataReducer.datasets,
-        users: state.userReducer.users
+        users: state.userReducer.users,
+        inspectedDataset: state.dataReducer.inspectedDataset
     }
 }
 

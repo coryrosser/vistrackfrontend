@@ -57,7 +57,7 @@ class SampleChart extends React.Component {
             data: this.props.data
           }]}
           type={this.props.type}
-          height={this.props.inspect ? '350' : 
+          height={this.props.inspect ? '322' : 
                   this.props.quick   ? '200' : '90%'}
           />
       </Container>

@@ -11,12 +11,14 @@ const Styles = styled.div`
     .j-contain {
         text-align: center;
         background: rgb(0,0,0,0.0);
+        opacity: 1;
     }
     .jumbo {
         background: linear-gradient(0deg, rgba(2, 195, 154, 0.0) 0%, rgba(2, 195, 154, 1) 100%);
+        z-index: -1;
+        height: 15vh;
     }
     .container-explore {
-        z-index: 2;
         background: rgb(0,0,0,0.4);
         height: 100vh;
         width: 100%;

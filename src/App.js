@@ -46,6 +46,7 @@ class App extends React.Component {
   render() {
     return (
       <Styles>
+        <Router>
         <Row style={{ marginLeft: 0, marginRight: 0 }}>
           <Col xs={2} style={{
             paddingRight: 0, 
@@ -55,7 +56,7 @@ class App extends React.Component {
           <SideNav />
           </Col>
           <Col xs={10} style={{paddingRight: 0, paddingLeft: 0}}>
-          <Router>
+          
                 <Switch>
                     <Route exact path='/'>
                         <Home />
@@ -76,9 +77,10 @@ class App extends React.Component {
                       <NewTracker/>
                     </Route>
                 </Switch>
-            </Router>
+            
           </Col>
       </Row>
+      </Router>
       </Styles>
 
     )

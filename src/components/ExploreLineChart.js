@@ -7,11 +7,12 @@ const Styles = styled.div`
     overflow-y: scroll;
     max-height: 75vh;
     .chart {
-        color: #111;
+        color: #222;
         
     }
     .contain {
-        background: rgb(255,255,255, 0.6);
+        color: #222;
+        background: rgb(255,255,255, 0.8);
         border-radius: 20px;
         height: 55vh;
         text-align:center;
@@ -31,7 +32,6 @@ class ExploreLineChart extends React.Component {
         fetch('https://www.quandl.com/api/v3/datasets/YALE/RBCI.json?api_key=2Po8fYyoSUauAftXx9SX')
         .then(res => res.json())
         .then(data => {
-            debugger
             let points = data.dataset.data.slice(1,25).map((entry) => {
                 return entry[2]
             })

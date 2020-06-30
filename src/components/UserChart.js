@@ -42,13 +42,13 @@ class SampleChart extends React.Component {
         
           <Chart
           options={{
-            // colors: [...this.props.colors],
             chart: {
               id: this.props.title
             },
             xaxis: {
               categories: this.props.categories
             },
+            labels: this.props.type === 'pie' ? this.props.categories : [],
             noData: {
               text: 'Loading'
             }

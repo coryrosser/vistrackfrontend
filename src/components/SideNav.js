@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import {withRouter} from 'react-router-dom'
 import {Row, ListGroup} from 'react-bootstrap'
 import { connect } from 'react-redux'
 
@@ -48,10 +49,13 @@ const SideNav = (props) => {
             </Row>
             <ListGroup className='group'>
                 <ListGroup.Item className='item'>
-                    <a href='/dashboard'>Dashboard</a>
-                </ListGroup.Item>
-                <ListGroup.Item className='item'>
                     <a href='/explore'>Explore</a>
+                </ListGroup.Item>
+                {
+                    props.isLoggedIn ?
+                    <>
+                    <ListGroup.Item className='item'>
+                    <a href='/dashboard'>Dashboard</a>
                 </ListGroup.Item>
                 <ListGroup.Item className='item'>
                     <a href='/'>My Tracks</a>
@@ -59,13 +63,21 @@ const SideNav = (props) => {
                 <ListGroup.Item className='item'>
                     <a href='/newtracker'>Create a New Tracker</a>
                 </ListGroup.Item>
+                </> :
+                ''
+                }
                 <ListGroup.Item className='item'>
                     <a href='/'>VisTeams</a>
                 </ListGroup.Item>
                 
                 {props.isLoggedIn ?
                 <ListGroup.Item className='item'>
-                    <a href='/'>Logout</a>
+                    <a href='/'
+                    onClick={(e) => {
+                        e.preventDefault()
+                        props.logOut()
+                        props.history.push('/')
+                    }}>Logout</a>
                 </ListGroup.Item>
                     :
                 <>
@@ -89,6 +101,12 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, null)(SideNav)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        logOut: () => dispatch({type: 'LOGOUT'})
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SideNav))
 
 

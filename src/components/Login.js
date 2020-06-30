@@ -35,7 +35,7 @@ class Login extends React.Component {
         .then(res => res.json())
         .then(user => {
             localStorage.setItem('user', `${user.user.id}` )
-            this.props.sendLogin(user)
+            this.props.sendLogin(user.user)
             this.props.history.push('/dashboard')
         })
     }
@@ -83,7 +83,7 @@ class Login extends React.Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        sendLogin: user => dispatch({type: 'LOGIN', user: user})
+        sendLogin: (user) => dispatch({type: 'LOGIN', user: user})
     } 
 }
 

@@ -9,6 +9,7 @@ export default (state = {}, action) => {
                 users: action.users
             }
         case LOGIN:
+            console.log(action.user)
             return {
                 ...state,
                 isLoggedIn: true,
@@ -19,10 +20,13 @@ export default (state = {}, action) => {
                 ...state,
                 isLoggedIn: true,
             }
-        // case LOGOUT:
-        //     return (
-
-        //     )
+        case 'LOGOUT':
+            console.log('logout')
+            return {
+                ...state,
+                isLoggedIn: false,
+                current_user: {}
+            }
         case CREATE_USER:
             return {
                 ...state,

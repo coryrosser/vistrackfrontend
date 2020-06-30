@@ -116,6 +116,11 @@ class NewTracker extends React.Component {
         this.setState({file: file})
     }
 
+    changeChartType = (type) =>{
+        console.log(type)
+        this.setState({type: type})
+    }
+
     render() {
         return (
             <Styles>
@@ -220,7 +225,7 @@ class NewTracker extends React.Component {
                     <Dropdown 
                     onSelect={(type) => {
                         console.log(type)
-                        this.setState({type: type})
+                        this.changeChartType(type)
                     }}>
                     <Dropdown.Toggle 
                     variant="primary" 

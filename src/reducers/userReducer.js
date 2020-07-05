@@ -19,6 +19,7 @@ export default (state = {}, action) => {
             return {
                 ...state,
                 isLoggedIn: true,
+                current_user: action.user
             }
         case 'LOGOUT':
             console.log('logout')

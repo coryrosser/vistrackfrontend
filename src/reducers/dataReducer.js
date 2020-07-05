@@ -9,7 +9,7 @@ export default (state = {}, action) => {
         case 'ADD_DATASET':
             return {
                 ...state,
-                datasets: [...state.dataReducer.datasets, action.dataset]
+                datasets: [...state.datasets, action.dataset]
             }
         // case LOGOUT:
         //     return (

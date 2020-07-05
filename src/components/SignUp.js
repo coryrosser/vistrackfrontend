@@ -2,6 +2,41 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Form, Button, Col } from 'react-bootstrap'
 import { withRouter } from 'react-router-dom'
+import styled from 'styled-components'
+
+const Styles = styled.div`
+background: url(https://bit.ly/2NrvjD2);
+height: 100%;
+.contain {
+    background: rgba(0,0,0,0.4);
+    height: 100%;
+    margin-top: 0;
+    display: block;
+    overflow: hidden;
+}
+.signup-form {
+    margin-top: 20vh;
+    text-align: center;
+    font-size: 1.4rem;
+    width: 80%;
+    color: #f7f7f7;
+    text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+}
+.user-input {
+    color: #f7f7f7;
+    background: rgb(255,255,255, 0.02);
+    border: none;
+    border-bottom: #f7f7f7 solid 1px;
+    &:hover {
+        background: rgb(255,255,255, 0.4);
+        transition: 0.3s;
+    }
+
+}
+`
+
 class SignUp extends React.Component {
 
     state={
@@ -48,7 +83,10 @@ class SignUp extends React.Component {
 
     render() {
         return (
-            <Form
+            <Styles>
+                <div className='contain'>
+                <Form
+            className='signup-form'
             onSubmit={(e) => {
                 e.preventDefault()
                 this.submitUserSignup(this.state)}}>
@@ -56,47 +94,47 @@ class SignUp extends React.Component {
                 <Form.Group as={Col} controlId="formGridFirstName">
                 <Form.Label>First Name</Form.Label>
                 <Form.Control 
+                className='user-input'
                 value={this.state.first_name}
                 onChange={e => this.setFirstName(e.target.value)}
-                type="text" 
-                placeholder="First Name" />
+                type="text" />
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formGridLastName">
                 <Form.Label>Last Name</Form.Label>
                 <Form.Control 
+                className='user-input'
                 value={this.state.last_name}
                 onChange={e => this.setLastName(e.target.value)}
-                type="text" 
-                placeholder="Last Name" />
+                type="text"  />
             </Form.Group>
             </Form.Row>
             <Form.Row>
               <Form.Group as={Col} controlId="formGridEmail">
                 <Form.Label>Email</Form.Label>
                 <Form.Control 
+                className='user-input'
                 value={this.state.email}
                 onChange={e => this.setEmail(e.target.value)}
-                type="text" 
-                placeholder="Email" />
+                type="text" />
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formGridPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control 
+                className='user-input'
                 value={this.state.password}
                 onChange={e => this.setPassword(e.target.value)}
-                type="password" 
-                placeholder="Password" />
+                type="password" />
             </Form.Group>
             </Form.Row>
           
             <Form.Group controlId="formGridAddress2">
-                <Form.Label>State</Form.Label>
+                <Form.Label>Location</Form.Label>
                 <Form.Control 
+                className='user-input'
                 value={this.state.location}
-                onChange={e => this.setLocation(e.target.value)}
-                placeholder="In which state do you live?" />
+                onChange={e => this.setLocation(e.target.value)}/>
             </Form.Group>
           
             <Form.Row>
@@ -105,6 +143,7 @@ class SignUp extends React.Component {
                 <Form.Label>Are you creating a business or personal account?
                 </Form.Label>
             <Form.Control 
+                className='user-input'
                 value={this.state.role}
                 onChange={e => this.setRole(e.target.value)}
                 as="select" defaultValue="Choose...">
@@ -118,6 +157,8 @@ class SignUp extends React.Component {
             </Button>
             
         </Form>
+                </div>
+            </Styles>
         )
     }
 }

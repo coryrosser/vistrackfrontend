@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import {Row, Col} from 'react-bootstrap'
 import SideNav from './components/SideNav'
 import Home from './components/Home'
+import VisTeams from './components/VisTeams'
 import Explore from './components/Explore'
 import SignUp from './components/SignUp'
 import Login from './components/Login'
@@ -18,7 +19,11 @@ class App extends React.Component {
   componentWillMount() {
     localStorage.getItem('user') ?
 
-      this.props.setLoggedIn()
+      fetch(`http://localhost:3000/users/${localStorage.getItem('user')}`)
+      .then(res => res.json())
+      .then(user => {
+        this.props.setLoggedIn(user)
+      })
         :
       console.log('log in to continue')
   }
@@ -73,6 +78,9 @@ class App extends React.Component {
                     <Route exact path='/dashboard'>
                         <Dashboard />
                     </Route>
+                    <Route exact path='/visteams'>
+                        <VisTeams />
+                    </Route>
                     <Route path='/newtracker'>
                       <NewTracker/>
                     </Route>
@@ -90,7 +98,7 @@ class App extends React.Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchUsers: (users) => dispatch({ type: 'FETCH_USERS', users: users }),
-    setLoggedIn: () => dispatch({type: 'SET_LOGIN'}),
+    setLoggedIn: (user) => dispatch({type: 'SET_LOGIN', user: user}),
     fetchDatasets: (datasets) => dispatch({type: 'FETCH_DATASETS', datasets: datasets})
   }
 }

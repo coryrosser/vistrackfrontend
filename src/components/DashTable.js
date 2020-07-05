@@ -2,6 +2,7 @@ import React from 'react'
 import {Table} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import styled from 'styled-components'
+import DataTable from 'react'
 
 const Styles = styled.div`
     thead {

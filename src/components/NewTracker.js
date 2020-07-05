@@ -1,5 +1,6 @@
 import React from 'react'
-import {Row, Col, Form, Button, Dropdown} from 'react-bootstrap'
+import Papa from 'papaparse'
+import {Row, Col, Form, Button, Dropdown, Modal} from 'react-bootstrap'
 import styled from 'styled-components'
 import UserChart from './UserChart'
 import {connect} from 'react-redux'
@@ -29,7 +30,7 @@ const Styles = styled.div`
         background: #02c39a;
         height: 95vh;
         text-align: center;
-        color: white;
+        color: #f7f7f7;
     }
     .content-col {
         background:black;
@@ -39,6 +40,9 @@ const Styles = styled.div`
         background: #ebf3f7;
         height: 50vh;
         border-bottom: #02c39a solid 2px;
+    }
+    .remove-btn {
+        height: 3vh;
     }
     .options-row {
         background: #ebf3f7;
@@ -63,7 +67,10 @@ class NewTracker extends React.Component {
         value: '',
         Xaxis: '',
         colors: [],
-        color: '#fff'
+        color: '#fff',
+        show: false,
+        file: [],
+        keys: [],
     }
 
     handleChangeComplete = (e) => {
@@ -73,16 +80,155 @@ class NewTracker extends React.Component {
         }, 
         console.log(this.state.colors))
     }
-
-
-    handleInput = (name, value) => {
-        this.setState({
-            categories: [...this.state.categories, name],
-            data: [...this.state.data, value],
-            name: '',
-            value: '',
+    handleFileUpload = (e) => {
+        console.log('hit')
+        Papa.parse(e.target.files[0], {
+        dynamicTyping: true, 
+        header: true,
+        complete: (results) => {
+            console.log('parsing')
+            console.log(results)
+            let keys = Object.keys(results.data[0])
+            this.setState({
+                keys: keys,
+                file: results.data,
+                show: true,
+            })
+            // let firstFive = results.data.slice(0,5)
+            // firstFive.map((entry) => {
+            // let obj = {
+            //     name: entry.SchoolName,
+            //     math: entry.MathematicsMean,
+            //     reading: entry.CriticalReadingMean
+            // }
+            // this.setState({data: [...this.state.data, obj]})
+            // })
+        }
         })
     }
+
+    handleClose = () => {
+        this.setState({show: !this.state.show})
+    }
+
+    pickUserKeys = (keys) => {
+        return (
+            <Modal
+            size='lg'
+            className='text-align-center justify-content-center'
+            show={this.state.show}
+            onHide={() => this.handleClose()}
+            backdrop="static"
+            keyboard={false}
+        >
+            <Modal.Header closeButton>
+            <Modal.Title
+            className='text-align-center justify-content-center'>Please Select From The Following</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+            <Row
+            className='text-align-center justify-content-center'><p>VisTrack found the following keys in your File.</p></Row>
+            
+            <Form
+            className='ml-auto mr-auto'>
+                    <Row
+            className='text-align-center justify-content-center'><Form.Label>Title</Form.Label></Row>
+                    <Row
+            className='text-align-center justify-content-center'><Form.Text>Please Select Your Tracker Title</Form.Text></Row>
+                    <Form.Group>
+                    <div className='align-items-center'>
+                    {keys.map((key) => {
+                        return (
+                            <Form.Check 
+                            onChange={(e) => {
+                                this.setState({
+                                    title: e.target.id
+                                })
+                            }}
+                            multiple='false'
+                            id={key}
+                            type='radio'
+                            label={key}/>
+                        )
+                    })}
+                    </div>
+                    </Form.Group>
+                    <Row
+            className='text-align-center justify-content-center'><Form.Label>Categories</Form.Label></Row>
+                    <Row
+            className='text-align-center justify-content-center'><Form.Text>This is labels that will appear on the X-Axis</Form.Text></Row>
+                    <Form.Group>
+                    {keys.map((key) => {
+                        return (
+                            <Form.Check
+                            onChange={(e) => {
+                                this.categoriesFromFile(e.target.id)
+                            }}
+                            multiple='false'
+                            id={key}
+                            type='radio'
+                            label={key}/>
+                        )
+                    })}
+                    </Form.Group>
+                    <Row
+            className='text-align-center justify-content-center'><Form.Label>Tracked Data</Form.Label></Row>
+                    <Row
+            className='text-align-center justify-content-center'><Form.Text>This is the data you wish to track</Form.Text></Row>
+                    <Form.Group>
+                    {keys.map((key) => {
+                        return (
+                            <Form.Check
+                            onChange={(e) => {
+                                this.setState({Xaxis: e.target.id,
+                                show:false})
+                                this.chartFromFile(e.target.id)
+                            }}
+                            multiple='false'
+                            id={key}
+                            type='radio'
+                            label={key}/>
+                        )
+                    })}
+                    </Form.Group>
+
+            </Form>
+            </Modal.Body>
+            <Modal.Footer>
+            <Button variant="secondary" onClick={() => this.handleClose()}>
+                Close
+            </Button>
+            <Button variant="primary">Understood</Button>
+            </Modal.Footer>
+    </Modal>
+        )
+    }
+
+    chartFromFile = (value) => {
+        let data = this.state.file.slice(0,5).map(entry => {
+            return entry[value]
+        })
+        this.setState({data: [...data]})
+    }
+    categoriesFromFile = (value) => {
+        let cats = this.state.file.slice(0,5).map(entry => {
+            return entry[value]
+        })
+        this.setState({categories: [...cats]})
+    }
+
+    handleInput = (target, index) => {
+        let cats = [...this.state.categories]
+        let data = [...this.state.data]
+        if( target.name === "name") {
+            cats[index] = target.value
+            this.setState({categories: cats})
+        } else {
+            data[index] = target.value
+            this.setState({data: data})
+        }
+    }
+
     handleTitle = (title) => {
         this.setState({title: title})
     }
@@ -95,7 +241,8 @@ class NewTracker extends React.Component {
             chart_type: this.state.type
             },
             name: [...this.state.categories],
-            data: [...this.state.data]
+            data: [...this.state.data],
+            user_id: this.props.current_user.id
             
         }
         fetch('http://localhost:3000/datasets', {
@@ -112,18 +259,69 @@ class NewTracker extends React.Component {
             this.props.history.push('/dashboard')
         })
     }
-    handleFileUpload = (file) => {
-        this.setState({file: file})
-    }
 
     changeChartType = (type) =>{
         console.log(type)
         this.setState({type: type})
     }
 
+
+
+    renderFormUI = () => {
+        return this.state.categories.map((el, i) => {
+            return (
+            <Form.Row>
+            <Form.Group as={Col}>
+                <Form.Control
+                    name='name'
+                    value={el || ''}
+                    onChange={(e) => {
+                        this.handleInput(e.target, i)
+                    }}
+                    placeholder="Label" />
+            </Form.Group>
+            <Form.Group as={Col}>
+                <Form.Control
+                    name='value'
+                    value={this.state.data[i]}
+                    onChange={(e) => {
+                        this.handleInput(e.target, i)
+                    }}
+                    placeholder="Data" />
+                </Form.Group>
+                <Button
+                className='remove-btn'
+                variant='danger'
+                size='sm'
+                onClick={()=>{this.removeEl(i)}}>X</Button>
+            </Form.Row>
+            
+            )
+        })
+    }
+
+    removeEl = (i) => {
+        let cats = [...this.state.categories]
+        let data = [...this.state.data]
+        cats.splice(i,1)
+        data.splice(i,1)
+        this.setState({
+            categories: cats,
+            data: data
+        })
+    }
+
+    addClick(){
+        this.setState({categories: [...this.state.categories, '']})
+    }
+
     render() {
         return (
             <Styles>
+                {
+                    this.state.keys ?
+                this.pickUserKeys(this.state.keys) :
+                ''}
             <Row className='title-row'>
                 <div className='title-text'>Create Your New Tracker</div>
             </Row>
@@ -157,31 +355,18 @@ class NewTracker extends React.Component {
                         <Form.Row>
                         <Form.Group as={Col} controlId="formBasicEmail">
                         <Form.Label>X-Axis Labels</Form.Label>
-                        <Form.Control
-                            name='name'
-                            value={this.state.name}
-                            onChange={(e) => {
-                                this.setState({name: e.target.value})
-                            }}
-                        placeholder="Enter Label" />
                         </Form.Group>
                         <Form.Group as={Col} controlId="formBasicEmail">
                         <Form.Label>X-Axis Data Values</Form.Label>
-                        <Form.Control
-                            name='value'
-                            value={this.state.value}
-                            onChange={(e) => {
-                                this.setState({value: e.target.value})
-                            }}
-                        placeholder="Enter Data" />
                         </Form.Group>
                         </Form.Row>
+                        {this.renderFormUI()}
                         <Button 
                         size='sm'
                         onClick={(e) => {
-                            this.handleInput(this.state.name, this.state.value)
+                            this.addClick()
                         }} >
-                        Preview Change
+                        Add Data Point
                         </Button>
                         <Row>
                         <Button 
@@ -193,14 +378,20 @@ class NewTracker extends React.Component {
                         </Form>
                         <Form className='tracker-form mt-5'>
                             <Form.Group>
-                                {/* <Form.Control
-                                className='btn btn-sm btn-primary'
-                                type='file'
+                                <Form.Row 
+                                className='justify-content-center'><Form.Label>Upload From File</Form.Label></Form.Row>
+                                
+                                <Form.File
+                                className='file-up'
+                                >
+                                    <Form.File.Input
+                                    
                                 onChange={e => {
-                                    e.preventDefault()
                                     this.handleFileUpload(e)
-                                }}
-                                /> */}
+                                    e.preventDefault()
+                                    
+                                }}/>
+                                </Form.File>
                             </Form.Group>
                         </Form>
 
@@ -223,6 +414,7 @@ class NewTracker extends React.Component {
                     
                     <Row>
                     <Dropdown 
+                    
                     onSelect={(type) => {
                         console.log(type)
                         this.changeChartType(type)
@@ -264,6 +456,11 @@ const mapDispatchToProps = (dispatch) => {
     return {
         addDataset: (dataset) => dispatch({type: 'ADD_DATASET', dataset: dataset})
     }
+}
+const mapStateToProps = (state) => {
+    return {
+        current_user: state.userReducer.current_user
     }
+}
 
-export default withRouter(connect(null, mapDispatchToProps)(NewTracker))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NewTracker))

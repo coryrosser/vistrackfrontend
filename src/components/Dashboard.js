@@ -21,9 +21,18 @@ const Styles = styled.div`
         height: 5vh;
         color: #f7f7f7;
     }
-    .inspect-alt {
+    .filler-row {
+        width: 100%;
+        margin-left: 0;
         text-align: center;
-        color: #222;
+        background: #02c39a;
+        height: 100%;
+        align-items: center;
+    }
+    .inspect-alt {
+        margin-left: auto; 
+        margin-right: auto;
+        color: #f7f7f7;
     }
     .title-text {
         margin-left: auto;
@@ -121,7 +130,10 @@ class Dashboard extends React.Component {
                             {this.props.inspectedDataset ? 
                             <InspectPanel />
                                 :
-                            <h3 className='inspect-alt'> Click an item on the left to inspect it!</h3>}
+                            <Row className='filler-row'>
+                                <h3 className='inspect-alt'> Click an item on the left to inspect it!</h3>
+                            </Row>
+                            }
                         </div>
                     </Col>
                 <Col />

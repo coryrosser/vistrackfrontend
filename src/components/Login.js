@@ -5,10 +5,47 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
 const Styles = styled.div`
-    max-width: 75vw;
-    margin-top: 15vh;
-    margin-left: auto; 
-    margin-right: auto;
+    background: url(https://bit.ly/2NrvjD2);
+    height: 100%;
+    .contain {
+        background: rgba(0,0,0,0.4);
+        height: 100%;
+        margin-top: 0;
+        display: block;
+        overflow: hidden;
+    }
+    .login-form {
+        margin-top: 20vh;
+        text-align: center;
+        font-size: 1.4rem;
+    }
+    .email, .pass {
+        color: #f7f7f7;
+        max-width: 50vw;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .user-input {
+        color: #f7f7f7;
+        background: rgb(255,255,255, 0.2);
+        border: none;
+        &:hover {
+            background: rgb(255,255,255, 0.4);
+            transition: 0.3s;
+        }
+    
+    }
+    .sub-btn {
+        color: #f7f7f7;
+        background: rgb(255,255,255, 0.2);
+        border: none;
+        &:hover {
+            background: rgb(255,255,255, 0.8);
+            color: #222;
+            transition: 0.3s;
+        }
+    }
+
 `
 
 class Login extends React.Component {
@@ -44,38 +81,43 @@ class Login extends React.Component {
     render() {
         return (
             <Styles>
+                <div className='contain'>
                 <Form
+                className='login-form'
             onSubmit={e => {
                 e.preventDefault()
                 this.onLogin(this.state)
             }}
             >
-                <Form.Group controlId="formBasicEmail">
+                <Form.Group 
+                className='email'
+                controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control 
+                    className='user-input'
                     value={this.state.email}
                     onChange={e => this.setEmail(e.target.value)}
                     type="email" 
                     placeholder="Enter email" />
-                    <Form.Text className="text-muted">
-                        We'll never share your email with anyone else.
-                    </Form.Text>
                 </Form.Group>
 
-                <Form.Group controlId="formBasicPassword">
+                <Form.Group 
+                className='pass'
+                controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
                     <Form.Control 
+                    className='user-input'
                     value={this.state.password}
                     onChange={e => this.setPassword(e.target.value)}
                     type="password" placeholder="Password" />
                 </Form.Group>
-                <Form.Group controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Check me out" />
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                    Submit
+                <Button 
+                className='sub-btn'
+                variant="primary" type="submit">
+                    Login
                 </Button>
             </Form>
+                </div>
             </Styles>
         )
     }

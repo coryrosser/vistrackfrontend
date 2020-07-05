@@ -1,7 +1,8 @@
 import React from 'react'
 import Papa from 'papaparse'
-import {Row, Col, Form, Button, Dropdown, Modal} from 'react-bootstrap'
+import {Row, Col, Form, Button, Dropdown, Modal, ListGroup} from 'react-bootstrap'
 import styled from 'styled-components'
+import {SwatchesPicker} from 'react-color'
 import UserChart from './UserChart'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
@@ -49,9 +50,192 @@ const Styles = styled.div`
         height: 45vh;
     }
     .option-col {
-        border: black solid 1px;
+        border: black solid 0px;
         margin-left: auto;
         margin-right:auto;
+        height: 100%;
+        overflow-y: scroll;
+    }
+    .color-row {
+        height: 50%;
+        align-items: center;
+        justify-content: center;
+    }
+    .color-title {
+        justify-content: center;
+        color: #222;
+        background:rgb(2, 195, 154, 0.3);
+    }
+    .palette-list {
+        width: 100%;
+    }
+    .p-item {
+        
+        cursor: pointer;
+        background: #ebf3f7;
+        &:hover {
+            background: rgb(2, 195, 154, 0.2);
+            transition: 0.3s;
+        }
+    }
+    }
+    .color {
+        border-radius: 50%;
+        height: 20px;
+        width: 20px;
+        margin-left: 3vw;
+        margin-top: .2vh;
+        border: #f7f7f7 solid 1px;
+    }
+    .c-1{
+        background: #008FFB;
+    }
+    .c-2 {
+        background: #ooe396
+    }
+    .c-3 {
+        background: #f3b019
+    }
+    .c-4 {
+        background: #ff4560
+    }
+    .c-5 {
+        background: #775dd0
+    }
+    .c-6 {
+        background: #3f51b5
+    }
+    .c-7 {
+        background: #03a9f4
+    }
+    .c-8 {
+        background: #4caf50
+    }
+    .c-9 {
+        background: #f9ce1d
+    }
+    .c-10 {
+        background: #ff9800
+    }
+    .c-11 {
+        background: #33b2df
+    }
+    .c-12{
+        background: #546e7a
+    }
+    .c-13{
+        background: #d4526e
+    }
+    .c-14{
+        background: #13d8aa
+    }
+    .c-15{
+        background: #a5978b
+    }
+    .c-16{
+        background: #4ecdc4
+    }
+    .c-17{
+        background: #c7f464
+    }
+    .c-18{
+        background: #81d4fa
+    }
+    .c-19{
+        background: #546e7a
+    }
+    .c-20{
+        background: #fd6a6a
+    }
+    .c-21{
+        background: #2b908f
+    }
+    .c-22{
+        background: #f9a3a4
+    }
+    .c-23{
+        background: #90ee7e
+    }
+    .c-24{
+        background: #fa4443
+    }
+    .c-25{
+        background: #69d2ez
+    }
+    .c-26{
+        background: #449dd1
+    }
+    .c-27{
+        background: #f86624
+    }
+    .c-28{
+        background: #ea3546
+    }
+    .c-29{
+        background: #662e9b
+    }
+    .c-30{
+        background: #c5d86d
+    }
+    .c-31{
+        background: #d7263d
+    }
+    .c-32{
+        background: #1b998b
+    }
+    .c-33{
+        background: #2e294e
+    }
+    .c-34{
+        background: #f46036
+    }
+    .c-35{
+        background: #e2c044
+    }
+    .c-36{
+        background: #662e9b
+    }
+    .c-37{
+        background: #f86624
+    }
+    .c-38{
+        background: #f9c80e
+    }
+    .c-39{
+        background: #ea3546
+    }
+    .c-40{
+        background: #43bccd
+    }
+    .c-41{
+        background: #5c4742
+    }
+    .c-42{
+        background: #a5978b
+    }
+    .c-43{
+        background: #8d5b4c
+    }
+    .c-44{
+        background: #5a2a27
+    }
+    .c-45{
+        background: #c4bbaf
+    }
+    .c-46{
+        background: #a300d6
+    }
+    .c-47{
+        background: #7d02eb
+    }
+    .c-48{
+        background: #5653fe
+    }
+    .c-49{
+        background: #2983ff
+    }
+    .c-50{
+        background: #00b1f2
     }
 `
 
@@ -59,8 +243,8 @@ const Styles = styled.div`
 class NewTracker extends React.Component {
     state={
         seriesInputs: [],
-        categories: [],
-        data: [],
+        categories: ['cr', 'cr2'],
+        data: [23, 14],
         type: 'bar',
         title: '',
         name: '',
@@ -71,12 +255,26 @@ class NewTracker extends React.Component {
         show: false,
         file: [],
         keys: [],
+        mode: 'light',
+        palette: 'palette1',
+    }
+
+    chartModeSwitch = () => {
+        if (this.state.mode === 'light') {
+            this.setState({
+                mode: 'dark'
+            })
+        } else {
+            this.setState({
+                mode: 'light'
+            })
+        }
     }
 
     handleChangeComplete = (e) => {
         console.log(e)
         this.setState({
-            colors: [...this.state.colors, e.hex]
+            colors: [e.hex]
         }, 
         console.log(this.state.colors))
     }
@@ -104,6 +302,12 @@ class NewTracker extends React.Component {
             // this.setState({data: [...this.state.data, obj]})
             // })
         }
+        })
+    }
+
+    paletteChange = (choice) => {
+        this.setState({
+            palette: choice
         })
     }
 
@@ -260,9 +464,9 @@ class NewTracker extends React.Component {
         })
     }
 
-    changeChartType = (type) =>{
-        console.log(type)
-        this.setState({type: type})
+    changeChartType = (val) =>{
+        console.log(val)
+        this.setState({type: val})
     }
 
 
@@ -401,7 +605,9 @@ class NewTracker extends React.Component {
                 className='content-col'>
                     <Row className='preview-row'>
                         <UserChart 
-                        
+                        mode={this.state.mode}
+                        palette={this.state.palette}
+                        horizontal={true}
                         type={this.state.type}
                         title={this.state.title}
                         categories={this.state.categories}
@@ -409,41 +615,161 @@ class NewTracker extends React.Component {
                         file={this.state.file} />
                     </Row>
                     <Row className='options-row'>
-                    <Col xs={1}/>
-                    <Col className='option-col' xs={4}>
+                    <Col className='option-col' xs={6}>
                     
                     <Row>
-                    <Dropdown 
-                    
-                    onSelect={(type) => {
-                        console.log(type)
-                        this.changeChartType(type)
-                    }}>
-                    <Dropdown.Toggle 
-                    variant="primary" 
-                    id="dropdown-basic">
-                        Select a Visualization type
-                    </Dropdown.Toggle>
 
-                    <Dropdown.Menu>
-                        <Dropdown.Item 
-                        eventKey='bar'>Bar</Dropdown.Item>
-                        <Dropdown.Item eventKey='line'>Line</Dropdown.Item>
-                        <Dropdown.Item eventKey='pie'>Pie</Dropdown.Item>
-                    </Dropdown.Menu>
-                    </Dropdown>
                     </Row>
-                    {/*<Row>
-                    <SketchPicker
-                    color={ this.state.color }
-                    onChangeComplete={(e)=> this.handleChangeComplete(e) }
-                    /> 
-                    </Row>*/}
-                    </Col>
-                    <Col className='option-col' xs={4}>
+                    <Row className='color-title'><h3>Color Picker</h3></Row>
+                    
+                    <Row 
+                    className='color-row'>
+                    <ListGroup className='palette-list'>
+                        <ListGroup.Item 
+                        onClick={() => {
+                            this.paletteChange('palette1')
+                        }}
+                        className='p-item'><Row>
+                            Palette 1 : 
+                        
+                        <div className='color c-1'></div> 
+                            <div className='color c-2'></div> 
+                            <div className='color c-3'></div> 
+                            <div className='color c-4'></div> 
+                            <div className='color c-5'></div> 
+                        </Row>
 
+                        </ListGroup.Item>
+                        <ListGroup.Item 
+                        onClick={() => {
+                            this.paletteChange('palette2')
+                        }}
+                        className='p-item'><Row>Palette 2 : 
+                            
+                            <div className='color c-6'></div> 
+                            <div className='color c-7'></div> 
+                            <div className='color c-8'></div> 
+                            <div className='color c-9'></div> 
+                            <div className='color c-10'></div> 
+                            </Row>
+
+                        </ListGroup.Item>
+                        <ListGroup.Item 
+                        onClick={() => {
+                            this.paletteChange('palette3')
+                        }}
+                        className='p-item'><Row>Palette 3 : 
+                                <div className='color c-11'></div> 
+                            <div className='color c-12'></div> 
+                            <div className='color c-13'></div> 
+                            <div className='color c-14'></div> 
+                            <div className='color c-15'></div> </Row>
+                            
+                        </ListGroup.Item>
+                        <ListGroup.Item 
+                        onClick={() => {
+                            this.paletteChange('palette4')
+                        }}
+                        className='p-item'><Row>Palette 4 : 
+                        <div className='color c-16'></div> 
+                            <div className='color c-17'></div> 
+                            <div className='color c-18'></div> 
+                            <div className='color c-19'></div> 
+                            <div className='color c-20'></div> </Row>
+                            
+                        </ListGroup.Item>
+                        <ListGroup.Item 
+                        onClick={() => {
+                            this.paletteChange('palette5')
+                        }}
+                        className='p-item'><Row>Palette 5 : 
+                        <div className='color c-21'></div> 
+                            <div className='color c-22'></div> 
+                            <div className='color c-23'></div> 
+                            <div className='color c-24'></div> 
+                            <div className='color c-25'></div> </Row>
+                            
+                        </ListGroup.Item>
+                        <ListGroup.Item 
+                        onClick={() => {
+                            this.paletteChange('palette6')
+                        }}
+                        className='p-item'><Row>Palette 6 : 
+                        <div className='color c-26'></div> 
+                            <div className='color c-27'></div> 
+                            <div className='color c-28'></div> 
+                            <div className='color c-29'></div> 
+                            <div className='color c-30'></div></Row>
+                            
+                        </ListGroup.Item>
+                        <ListGroup.Item 
+                        onClick={() => {
+                            this.paletteChange('palette7')
+                        }}
+                        className='p-item'><Row>Palette 7 : 
+                        <div className='color c-31'></div> 
+                            <div className='color c-32'></div> 
+                            <div className='color c-33'></div> 
+                            <div className='color c-34'></div> 
+                            <div className='color c-35'></div> </Row>
+                            
+                        </ListGroup.Item>
+                        <ListGroup.Item 
+                        onClick={() => {
+                            this.paletteChange('palette8')
+                        }}
+                        className='p-item'><Row>Palette 8 : 
+                        <div className='color c-36'></div> 
+                            <div className='color c-37'></div> 
+                            <div className='color c-38'></div> 
+                            <div className='color c-39'></div> 
+                            <div className='color c-40'></div></Row>
+                            
+                        </ListGroup.Item>
+                        <ListGroup.Item 
+                        onClick={() => {
+                            this.paletteChange('palette9')
+                        }}
+                        className='p-item'><Row>Palette 9 : 
+                        <div className='color c-41'></div> 
+                            <div className='color c-42'></div> 
+                            <div className='color c-43'></div> 
+                            <div className='color c-44'></div> 
+                            <div className='color c-45'></div></Row>
+                            
+                        </ListGroup.Item>
+                        <ListGroup.Item 
+                        onClick={() => {
+                            this.paletteChange('palette10')
+                        }}
+                        className='p-item'><Row>Palette 10 : 
+                        <div className='color c-46'></div> 
+                            <div className='color c-47'></div> 
+                            <div className='color c-48'></div> 
+                            <div className='color c-49'></div> 
+                            <div className='color c-50'></div> </Row>
+                            
+                        </ListGroup.Item>
+                    </ListGroup>
+
+                    {/* <SwatchesPicker 
+                    onChangeComplete={(e) => {
+                        this.handleChangeComplete(e)
+                    }}/> */}
+                    
+                    </Row>
                     </Col>
-                    <Col xs={1}/>
+                    <Col className='option-col' xs={6}>
+                        <Row className='color-title'><h3>Options</h3></Row>
+                        <Form.Check 
+                        type='switch'
+                        id='mode-switch'
+                        label='Chart Dark Mode'
+                        onChange={() => {
+                            this.chartModeSwitch()
+                        }}/>
+                        
+                    </Col>
 
                     </Row>
                 </Col>

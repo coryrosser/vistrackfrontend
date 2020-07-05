@@ -8,7 +8,11 @@ import Chart from "react-apexcharts";
 // } from 'recharts'
 
 class SampleChart extends React.Component {
-
+  makeColors = (arr) => {
+    if (arr.length > 1) {
+      return arr
+    }
+  }
   render() {
     return (
       <Container>
@@ -36,6 +40,15 @@ class SampleChart extends React.Component {
 
         <Chart
         options={{
+          theme: {
+            mode: this.props.mode,
+            palette: this.props.palette,
+          },
+          plotOptions: {
+            bar: {
+              distributed: true
+            },
+          },
           chart: {
             id: this.props.title
           },
@@ -50,7 +63,6 @@ class SampleChart extends React.Component {
             text: 'Loading'
           },
           
-        colors:['#E91E63', '#9C27B0']
         }}
         series={[{
           data: this.props.data
@@ -58,7 +70,6 @@ class SampleChart extends React.Component {
         type={this.props.type}
         height={this.props.inspect ? '322' : 
                 this.props.quick   ? '200' : '90%'}
-        colors={['#F44336', '#E91E63', '#9C27B0']}
         />
         }
       </Container>

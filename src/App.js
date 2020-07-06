@@ -41,14 +41,16 @@ class App extends React.Component {
     })
   }
   getDataSets = () => {
-    fetch('http://localhost:3000/datasets')
-    .then(res => res.json())
-    .then(data => {
-      let filteredData = data.filter((entry) => {
-        return entry.user_id === this.props.current_user.id
+    if (this.props.current_user) {
+      fetch('http://localhost:3000/datasets')
+      .then(res => res.json())
+      .then(data => {
+        let filteredData = data.filter((entry) => {
+          return entry.user_id === this.props.current_user.id
+        })
+          this.props.fetchDatasets(filteredData)
       })
-        this.props.fetchDatasets(filteredData)
-    })
+    }
   }
   
   render() {
@@ -79,7 +81,8 @@ class App extends React.Component {
                         <Explore/>
                     </Route>
                     <Route exact path='/dashboard'>
-                        <Dashboard />
+                        <Dashboard 
+                        current_user={this.props.current_user}/>
                     </Route>
                     <Route exact path='/visteams'>
                         <VisTeams />

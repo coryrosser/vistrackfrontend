@@ -58,7 +58,18 @@ const Styles = styled.div`
 `
 
 class Dashboard extends React.Component {
-
+    componentDidMount() {
+        if (this.props.current_user) {
+            fetch('http://localhost:3000/datasets')
+            .then(res => res.json())
+            .then(data => {
+                let filteredData = data.filter((entry) => {
+                    return entry.user_id === this.props.current_user.id
+            })
+                this.props.fetchDatasets(filteredData)
+            })
+        }
+    }
     state={
         inspected: '',
     }
@@ -148,8 +159,18 @@ const mapStateToProps = (state) => {
     return {
         datasets: state.dataReducer.datasets,
         users: state.userReducer.users,
+        current_user: state.userReducer.current_user,
         inspectedDataset: state.dataReducer.inspectedDataset
     }
 }
 
-export default connect(mapStateToProps, null)(Dashboard)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchDatasets: (datasets) => dispatch({
+            type: 'FETCH_DATASETS',
+            datasets: datasets
+        })
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

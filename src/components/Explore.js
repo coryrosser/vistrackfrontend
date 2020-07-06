@@ -5,7 +5,7 @@ import DashTutorial from './DashTutorial'
 import TrackerTutorial from './TrackerTutorial'
 import GroupTutorial from './GroupTutorial'
 import ExploreLineChart from './ExploreLineChart'
-import {Row,Container, Col, ListGroup, Carousel, Image } from 'react-bootstrap'
+import {Row,Container, Col, ListGroup, Image } from 'react-bootstrap'
 
 const Styles = styled.div`
     background: url(https://bit.ly/2NrvjD2);

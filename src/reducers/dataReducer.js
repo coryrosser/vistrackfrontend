@@ -7,10 +7,18 @@ export default (state = {}, action) => {
                 datasets: action.datasets
             }
         case 'ADD_DATASET':
-            return {
-                ...state,
-                datasets: [...state.datasets, action.dataset]
+            if(!state.datasets) {
+                return {
+                    ...state,
+                    datasets: [action.dataset]
+                }
+            } else {
+                return {
+                    ...state,
+                    datasets: [...state.datasets, action.dataset]
+                }
             }
+            
         // case LOGOUT:
         //     return (
 

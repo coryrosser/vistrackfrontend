@@ -243,9 +243,9 @@ const Styles = styled.div`
 class NewTracker extends React.Component {
     state={
         seriesInputs: [],
-        categories: [],
-        data: [],
-        type: 'bar',
+        categories: ['test', 'test2','test3'],
+        data: [12,32,24],
+        type: 'donut',
         title: '',
         name: '',
         value: '',
@@ -271,21 +271,11 @@ class NewTracker extends React.Component {
         }
     }
 
-    handleChangeComplete = (e) => {
-        console.log(e)
-        this.setState({
-            colors: [e.hex]
-        }, 
-        console.log(this.state.colors))
-    }
     handleFileUpload = (e) => {
-        console.log('hit')
         Papa.parse(e.target.files[0], {
         dynamicTyping: true, 
         header: true,
         complete: (results) => {
-            console.log('parsing')
-            console.log(results)
             let keys = Object.keys(results.data[0])
             this.setState({
                 keys: keys,
@@ -463,16 +453,16 @@ class NewTracker extends React.Component {
         })
         .then(res => res.json())
         .then(dataset => {
-            console.log(dataset)
             this.props.addDataset(dataset)
             this.props.history.push('/dashboard')
         })
     }
 
-    handleChartTypeChange = (type) => {
+    handleChartTypeChange = (value) => {
         this.setState({
-            type: type
-        })
+            type: value
+        },
+        () => console.log('setting ' + this.state.type))
     }
 
 
@@ -550,7 +540,6 @@ class NewTracker extends React.Component {
                         name
                         value={this.state.title}
                         onChange={(e) => {
-                            console.log(e.target.value)
                             this.handleTitle(e.target.value)
                         }}
                         placeholder="Enter Title" />
@@ -789,6 +778,14 @@ class NewTracker extends React.Component {
                             onChange={() => {this.handleChartTypeChange('radar')}}
                             type='radio' name='type-radio'/>
                             <span className="ml-1">Radar</span>
+                            <input className='ml-3 mt-2'
+                            onChange={() => {this.handleChartTypeChange('pie')}}
+                            type='radio' name='type-radio'/>
+                            <span className="ml-1">Pie</span>
+                            <input className='ml-3 mt-2'
+                            onChange={() => {this.handleChartTypeChange('donut')}}
+                            type='radio' name='type-radio'/>
+                            <span className="ml-1">Donut</span>
                         </Row>
                         
                     </Col>

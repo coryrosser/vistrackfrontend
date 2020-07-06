@@ -19,6 +19,15 @@ class SampleChart extends React.Component {
         {this.props.inspect ? 
         <Chart
         options={{
+          theme: {
+            mode: this.props.inspectedDataset.mode,
+            palette: this.props.inspectedDataset.palette,
+          },
+          plotOptions: {
+            bar: {
+              distributed: true
+            },
+          },
           chart: {
             id: this.props.inspectedDataset.title
           },
@@ -34,12 +43,16 @@ class SampleChart extends React.Component {
         }]}
         type={this.props.inspectedDataset.chart_type}
         height={this.props.inspect ? '322' : 
-                this.props.quick   ? '200' : '90%'}
+                this.props.quick   ? '225' : '90%'}
         />
         :
 
         <Chart
         options={{
+          dataLabels: {
+            enabled: true
+          },
+          labels: [...this.props.categories],
           theme: {
             mode: this.props.mode,
             palette: this.props.palette,
@@ -60,7 +73,7 @@ class SampleChart extends React.Component {
           },
           labels: this.props.type === 'pie' ? this.props.categories : [],
           noData: {
-            text: 'Loading'
+            text: 'Add Data Points to Get Started!'
           },
           
         }}

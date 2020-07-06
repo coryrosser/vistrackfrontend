@@ -80,16 +80,18 @@ class InspectPanel extends React.Component {
         view: 0,
         subject: '',
         content: '',
-        notes: []
+        notes: [],
+        dataset: {}
     }
     componentWillUnmount() {
         this.setState({
-            
+            notes: []
         })
     }
     componentDidMount() {
         if (this.props.inspectedDataset) {
-            this.setState({notes: this.props.inspectedDataset.notes})
+            this.setState({notes: this.props.inspectedDataset.notes,
+            })
         }
     }
 
@@ -208,7 +210,9 @@ class InspectPanel extends React.Component {
                     <h3 className='mr-auto ml-auto'>Notes</h3>
                 </Row>
                 <Row className='note-row'>
-                    {this.renderNotes(this.state.notes)}
+                    {this.renderNotes(this.state.notes.filter((note) => {
+                        return note.dataset_id === this.props.inspectedDataset.id
+                    }))}
                 </Row>
                 <Row className='form-row'>
                     <Form 

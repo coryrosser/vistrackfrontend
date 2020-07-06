@@ -51,7 +51,7 @@ const Styles = styled.div`
     }
     .card {
         text-align:center;
-        height: 25vh;
+        height: 30vh;
         margin-bottom: 2vh;
         border: #ddd solid 1px;
     }
@@ -65,6 +65,7 @@ class Dashboard extends React.Component {
     renderQuickView = (datasets) => {
         console.log(datasets)
         return datasets.map(entry => {
+
             let names = entry.dataset_series.map((series) => {
                 return series.name
             })
@@ -77,6 +78,8 @@ class Dashboard extends React.Component {
                     className='card' >
                         <Card.Body>
                             <UserChart 
+                            mode={entry.mode}
+                            palette={entry.palette}
                             quick='true'
                             type={entry.chart_type}
                             title={entry.title ? entry.title : "Untitled-Tracker"}

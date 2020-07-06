@@ -91,7 +91,7 @@ const Styles = styled.div`
         background: #008FFB;
     }
     .c-2 {
-        background: #ooe396
+        background: #00e396
     }
     .c-3 {
         background: #f3b019
@@ -160,7 +160,7 @@ const Styles = styled.div`
         background: #fa4443
     }
     .c-25{
-        background: #69d2ez
+        background: #69d2e7
     }
     .c-26{
         background: #449dd1
@@ -243,8 +243,8 @@ const Styles = styled.div`
 class NewTracker extends React.Component {
     state={
         seriesInputs: [],
-        categories: ['cr', 'cr2'],
-        data: [23, 14],
+        categories: [],
+        data: [],
         type: 'bar',
         title: '',
         name: '',
@@ -344,6 +344,7 @@ class NewTracker extends React.Component {
                     {keys.map((key) => {
                         return (
                             <Form.Check 
+                            name='check-title'
                             onChange={(e) => {
                                 this.setState({
                                     title: e.target.id
@@ -365,6 +366,7 @@ class NewTracker extends React.Component {
                     {keys.map((key) => {
                         return (
                             <Form.Check
+                            name='check-cats'
                             onChange={(e) => {
                                 this.categoriesFromFile(e.target.id)
                             }}
@@ -383,6 +385,7 @@ class NewTracker extends React.Component {
                     {keys.map((key) => {
                         return (
                             <Form.Check
+                            name='check-data'
                             onChange={(e) => {
                                 this.setState({Xaxis: e.target.id,
                                 show:false})
@@ -442,7 +445,9 @@ class NewTracker extends React.Component {
             dataset: 
             {
                 title: this.state.title,
-            chart_type: this.state.type
+            chart_type: this.state.type,
+            mode: this.state.mode,
+            palette: this.state.palette
             },
             name: [...this.state.categories],
             data: [...this.state.data],
@@ -464,9 +469,10 @@ class NewTracker extends React.Component {
         })
     }
 
-    changeChartType = (val) =>{
-        console.log(val)
-        this.setState({type: val})
+    handleChartTypeChange = (type) => {
+        this.setState({
+            type: type
+        })
     }
 
 
@@ -541,6 +547,7 @@ class NewTracker extends React.Component {
                         <Form.Group controlId="formBasicEmail">
                         <Form.Label>Tracker Title</Form.Label>
                         <Form.Control
+                        name
                         value={this.state.title}
                         onChange={(e) => {
                             console.log(e.target.value)
@@ -751,16 +758,12 @@ class NewTracker extends React.Component {
                             
                         </ListGroup.Item>
                     </ListGroup>
-
-                    {/* <SwatchesPicker 
-                    onChangeComplete={(e) => {
-                        this.handleChangeComplete(e)
-                    }}/> */}
                     
                     </Row>
                     </Col>
                     <Col className='option-col' xs={6}>
                         <Row className='color-title'><h3>Options</h3></Row>
+                        <Row>
                         <Form.Check 
                         type='switch'
                         id='mode-switch'
@@ -768,6 +771,25 @@ class NewTracker extends React.Component {
                         onChange={() => {
                             this.chartModeSwitch()
                         }}/>
+                        </Row>
+                        <Row>
+                            <input className='ml-3 mt-2'
+                            onChange={() => {this.handleChartTypeChange('bar')}}
+                            type='radio' name='type-radio'/>
+                            <span className="ml-1">Bar</span>
+                            <input className='ml-3 mt-2'
+                            onChange={() => {this.handleChartTypeChange('line')}}
+                            type='radio' name='type-radio'/>
+                            <span className="ml-1">Line</span>
+                            <input className='ml-3 mt-2'
+                            onChange={() => {this.handleChartTypeChange('area')}}
+                            type='radio' name='type-radio'/>
+                            <span className="ml-1">Area</span>
+                            <input className='ml-3 mt-2'
+                            onChange={() => {this.handleChartTypeChange('radar')}}
+                            type='radio' name='type-radio'/>
+                            <span className="ml-1">Radar</span>
+                        </Row>
                         
                     </Col>
 

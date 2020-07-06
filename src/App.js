@@ -44,7 +44,10 @@ class App extends React.Component {
     fetch('http://localhost:3000/datasets')
     .then(res => res.json())
     .then(data => {
-        this.props.fetchDatasets(data)
+      let filteredData = data.filter((entry) => {
+        return entry.user_id === this.props.current_user.id
+      })
+        this.props.fetchDatasets(filteredData)
     })
   }
   
@@ -104,9 +107,9 @@ const mapDispatchToProps = (dispatch) => {
 }
 const mapStateToProps = (state) => {
   return {
+    current_user: state.userReducer.current_user,
     users: state.userReducer.users,
     isLoggedIn: state.userReducer.isLoggedIn,
-    
   }
 }
 

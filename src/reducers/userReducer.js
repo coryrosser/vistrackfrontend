@@ -23,6 +23,7 @@ export default (state = {}, action) => {
             }
         case 'LOGOUT':
             console.log('logout')
+            localStorage.clear()
             return {
                 ...state,
                 isLoggedIn: false,

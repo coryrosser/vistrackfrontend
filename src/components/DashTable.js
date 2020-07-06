@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import DataTable from 'react'
 
 const Styles = styled.div`
+    height: 100%;
+    overflow-y: scroll;
     thead {
         background: rgb(2, 195, 154, 0.5);
         color: #333;

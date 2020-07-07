@@ -1,6 +1,8 @@
 import React from 'react'
 import Papa from 'papaparse'
-import {Row, Col, Form, Button, Dropdown, Modal, ListGroup} from 'react-bootstrap'
+import {Row, Col, Form, Button, Dropdown, 
+    DropdownButton, Modal, ListGroup
+    ,Card,Accordion} from 'react-bootstrap'
 import styled from 'styled-components'
 import {SwatchesPicker} from 'react-color'
 import UserChart from './UserChart'
@@ -10,6 +12,70 @@ import { withRouter } from 'react-router-dom'
 const Styles = styled.div`
     background: #ebf3f7;
     overflow: hidden;
+    .list-accordion {
+        color: #444;
+        border: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: 1.2rem;
+        &:hover {
+            background: rgb(0,0,0,0.2);
+            transition: 0.3s;
+        }
+    }
+    .accordion-item {
+        background: #ebf3f7;
+        height: 4vh;
+        cursor:pointer;
+        font-size: 1rem;
+        &:hover {
+            background: rgb(2, 195, 154, 0.2);
+            transition: 0.3s;
+        }
+    }
+    .accordion-header {
+        background: #ebf3f7;
+        cursor: pointer;
+        width: 100%;
+        border: none;
+    }
+    .accordion-card {
+        color: #444;
+        border: none;
+    }
+    .option-row-drop {
+        justify-content: center;
+    }
+    .option-item {
+        background: #ebf3f7;
+        border: none;
+        border-bottom: #02c39a solid 1px;
+        color: #222;
+    }
+    .item-light {
+        background: #f7f7f7;
+        border: none;
+        border-bottom: #02c39a solid 1px;
+        color: #222;
+        cursor: pointer;
+        &:hover {
+            background: #444;
+            color: #f7f7f7;
+            transition: 1s;
+        }
+    }
+    .item-dark {
+        background: #444;
+        color: #f7f7f7;
+        border: none;
+        border-bottom: #02c39a solid 1px;
+        cursor: pointer;
+        &:hover {
+            background: #f7f7f7;
+            color: #222;
+            transition: 1s;
+        }
+    }
     .title-row {
         width: 100%;
         margin-left: 0;
@@ -55,6 +121,9 @@ const Styles = styled.div`
         margin-right:auto;
         height: 100%;
         overflow-y: scroll;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
     }
     .color-row {
         height: 50%;
@@ -245,7 +314,7 @@ class NewTracker extends React.Component {
         seriesInputs: [],
         categories: ['test', 'test2','test3'],
         data: [12,32,24],
-        type: 'donut',
+        chartType: 'line',
         title: '',
         name: '',
         value: '',
@@ -257,8 +326,13 @@ class NewTracker extends React.Component {
         keys: [],
         mode: 'light',
         palette: 'palette1',
+        showChart: true,
+        width: 5,
     }
 
+    handleWidthChange = (value) => {
+        this.setState({width: value})
+    }
     chartModeSwitch = () => {
         if (this.state.mode === 'light') {
             this.setState({
@@ -269,6 +343,9 @@ class NewTracker extends React.Component {
                 mode: 'light'
             })
         }
+    }
+    setCurve = (string) => {
+        this.setState({curve: string})
     }
 
     handleFileUpload = (e) => {
@@ -435,9 +512,11 @@ class NewTracker extends React.Component {
             dataset: 
             {
                 title: this.state.title,
-            chart_type: this.state.type,
+            chart_type: this.state.chartType,
             mode: this.state.mode,
-            palette: this.state.palette
+            palette: this.state.palette,
+            curve: this.state.curve,
+            width:this.state.width
             },
             name: [...this.state.categories],
             data: [...this.state.data],
@@ -460,10 +539,16 @@ class NewTracker extends React.Component {
 
     handleChartTypeChange = (value) => {
         this.setState({
-            type: value
+            chartType: value,
+            showChart: false
         },
-        () => console.log('setting ' + this.state.type))
-    }
+        () => {
+            setTimeout(() => {
+                this.setState({showChart: true})
+            }, 500)
+        }
+        )
+}
 
 
 
@@ -600,23 +685,23 @@ class NewTracker extends React.Component {
                 xs={9}
                 className='content-col'>
                     <Row className='preview-row'>
+                        {this.state.showChart ? 
                         <UserChart 
+                        width={this.state.width}
+                        curve={this.state.curve}
                         mode={this.state.mode}
                         palette={this.state.palette}
-                        horizontal={true}
-                        type={this.state.type}
+                        chartType={this.state.chartType}
                         title={this.state.title}
                         categories={this.state.categories}
                         data={this.state.data}
-                        file={this.state.file} />
+                        file={this.state.file} /> :
+
+                        <p>loading</p>}
                     </Row>
                     <Row className='options-row'>
                     <Col className='option-col' xs={6}>
-                    
-                    <Row>
-
-                    </Row>
-                    <Row className='color-title'><h3>Color Picker</h3></Row>
+                    <Row className='color-title'><h3>Color Palette</h3></Row>
                     
                     <Row 
                     className='color-row'>
@@ -752,42 +837,99 @@ class NewTracker extends React.Component {
                     </Col>
                     <Col className='option-col' xs={6}>
                         <Row className='color-title'><h3>Options</h3></Row>
-                        <Row>
-                        <Form.Check 
-                        type='switch'
-                        id='mode-switch'
-                        label='Chart Dark Mode'
-                        onChange={() => {
-                            this.chartModeSwitch()
-                        }}/>
+                        <Row className='option-row'>
+                        <ListGroup
+                        className='palette-list'
+                        flush>
+                            <ListGroup.Item
+                            onClick={() => {
+                                this.chartModeSwitch()
+                            }}
+                            className={this.state.mode === 'light' ?
+                                                    'item-light' :
+                                                    'item-dark'}>
+                            {this.state.mode === 'light' ?
+                            <h6>Activate Dark-Mode</h6> :
+                            <h6>Activate Light-Mode</h6>}
+                            </ListGroup.Item>
+                            <ListGroup.Item
+                            className='option-item'>
+                                <Accordion 
+                                className='list-accordion'
+                                defaultActiveKey="">
+                                    <Card className='accordion-card'>
+                                    <Accordion.Toggle 
+                                    className='accordion-header'
+                                    as={Card.Header} eventKey="0">
+                                        Select Chart Type
+                                    </Accordion.Toggle>
+                                    <Accordion.Collapse eventKey="0">
+                                        <Card.Body 
+                                        onClick={(e) => {this.handleChartTypeChange('bar')}}
+                                        className='accordion-item'>Bar</Card.Body>
+                                    </Accordion.Collapse>
+                                    <Accordion.Collapse eventKey="0">
+                                        <Card.Body 
+                                        onClick={(e) => {this.handleChartTypeChange('line')}}
+                                        className='accordion-item'>Line</Card.Body>
+                                    </Accordion.Collapse>
+                                    <Accordion.Collapse eventKey="0">
+                                        <Card.Body 
+                                        onClick={(e) => {this.handleChartTypeChange('area')}}
+                                        className='accordion-item'>Area</Card.Body>
+                                    </Accordion.Collapse>
+                                    <Accordion.Collapse eventKey="0">
+                                        <Card.Body 
+                                        onClick={(e) => {this.handleChartTypeChange('radar')}}
+                                        className='accordion-item'>Radar</Card.Body>
+                                    </Accordion.Collapse>
+                                    <Accordion.Collapse eventKey="0">
+                                        <Card.Body 
+                                        onClick={(e) => {this.handleChartTypeChange('pie')}}
+                                        className='accordion-item'>Pie</Card.Body>
+                                    </Accordion.Collapse>
+                                    <Accordion.Collapse eventKey="0">
+                                        <Card.Body 
+                                        onClick={(e) => {this.handleChartTypeChange('donut')}}
+                                        className='accordion-item'>Donut</Card.Body>
+                                    </Accordion.Collapse>
+                                    </Card>
+                                </Accordion>
+                            
+                            </ListGroup.Item>
+                        </ListGroup>
+                        <Col xs={6}>
+                            <Row className='color-title'><h4>Line Graph Curve</h4></Row>
+                            
+                                {['straight', 'smooth', 'stepline'].map((entry) =>{
+                                    return(
+                                        <Row className='line-opt-row'>
+                                        <Form.Check
+                                        type='radio'
+                                        name='line-type'
+                                        onChange={() => {this.setCurve(entry)}}
+                                        label={entry.charAt(0).toUpperCase() + entry.slice(1)}/>
+                                        </Row>
+                                    )
+                                })}
+                            
+                        </Col>
+                        <Col xs={6}>
+                            <Row className='color-title'><h4>Line Width</h4></Row>
+                            <Row>
+                            <Form>
+                            <Form.Group controlId="formBasicRange">
+                            <Form.Label>Change your line width</Form.Label>
+                            <Form.Control 
+                            defaultValue={4}
+                            onChange={(e) => this.handleWidthChange(e.target.value)}
+                            type="range" />
+                            </Form.Group>
+                            </Form>
+                            </Row>
+                        </Col>
+
                         </Row>
-                        <Row>
-                            <input className='ml-3 mt-2'
-                            onChange={() => {this.handleChartTypeChange('bar')}}
-                            type='radio' name='type-radio'/>
-                            <span className="ml-1">Bar</span>
-                            <input className='ml-3 mt-2'
-                            onChange={() => {this.handleChartTypeChange('line')}}
-                            type='radio' name='type-radio'/>
-                            <span className="ml-1">Line</span>
-                            <input className='ml-3 mt-2'
-                            onChange={() => {this.handleChartTypeChange('area')}}
-                            type='radio' name='type-radio'/>
-                            <span className="ml-1">Area</span>
-                            <input className='ml-3 mt-2'
-                            onChange={() => {this.handleChartTypeChange('radar')}}
-                            type='radio' name='type-radio'/>
-                            <span className="ml-1">Radar</span>
-                            <input className='ml-3 mt-2'
-                            onChange={() => {this.handleChartTypeChange('pie')}}
-                            type='radio' name='type-radio'/>
-                            <span className="ml-1">Pie</span>
-                            <input className='ml-3 mt-2'
-                            onChange={() => {this.handleChartTypeChange('donut')}}
-                            type='radio' name='type-radio'/>
-                            <span className="ml-1">Donut</span>
-                        </Row>
-                        
                     </Col>
 
                     </Row>

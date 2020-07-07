@@ -59,7 +59,6 @@ const Styles = styled.div`
 
 class Dashboard extends React.Component {
     componentDidMount() {
-        if (this.props.current_user) {
             fetch('http://localhost:3000/datasets')
             .then(res => res.json())
             .then(data => {
@@ -68,7 +67,6 @@ class Dashboard extends React.Component {
             })
                 this.props.fetchDatasets(filteredData)
             })
-        }
     }
     state={
         inspected: '',

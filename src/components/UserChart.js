@@ -7,10 +7,8 @@ import Chart from "react-apexcharts";
 //   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 // } from 'recharts'
 
-class SampleChart extends React.Component {
-
+class UserChart extends React.Component {
   decideOnChart=(type) => {
-    console.log(type)
     if(type === 'bar') {
       return (
         <Chart
@@ -29,6 +27,19 @@ class SampleChart extends React.Component {
             },
           },
           chart: {
+              dropShadow: {
+              enabled: true,
+              top: 0,
+              left: 0,
+              blur: 3,
+              opacity: 0.5
+            },
+            events: {
+              mounted: () => console.log('mounted', type),
+              updated: () => {
+                console.log('updated to ' + type)
+                }
+            },
             id: this.props.title
           },
           stroke: {
@@ -43,6 +54,7 @@ class SampleChart extends React.Component {
           },
           
         }}
+        
         series={[{
           data: this.props.data
         }]}
@@ -61,7 +73,7 @@ class SampleChart extends React.Component {
           labels: [...this.props.categories],
           theme: {
             mode: this.props.mode,
-            palette: this.props.palette,
+            palette: this.props.palette
           },
           plotOptions: {
             bar: {
@@ -69,10 +81,17 @@ class SampleChart extends React.Component {
             },
           },
           chart: {
+            events: {
+              mounted: () => console.log('mounted', type),
+              updated: () => {
+                console.log('updated to ' + type)
+                }
+            },
             id: this.props.title
           },
           stroke: {
-            curve: 'straight',
+            curve: this.props.curve,
+            width: this.props.width
           },
           xaxis: {
             categories: this.props.categories
@@ -101,7 +120,7 @@ class SampleChart extends React.Component {
           labels: [...this.props.categories],
           theme: {
             mode: this.props.mode,
-            palette: this.props.palette,
+            palette: this.props.palette
           },
           plotOptions: {
             bar: {
@@ -109,10 +128,17 @@ class SampleChart extends React.Component {
             },
           },
           chart: {
+            events: {
+              mounted: () => console.log('mounted', type),
+              updated: () => {
+                console.log('updated to ' + type)
+                }
+            },
             id: this.props.title
           },
           stroke: {
-            curve: 'straight',
+            curve: this.props.curve,
+            width: this.props.width
           },
           xaxis: {
             categories: this.props.categories
@@ -149,6 +175,12 @@ class SampleChart extends React.Component {
             },
           },
           chart: {
+            events: {
+              mounted: () => console.log('mounted', type),
+              updated: () => {
+                console.log('updated to ' + type)
+                }
+            },
             id: this.props.title
           },
           stroke: {
@@ -189,6 +221,12 @@ class SampleChart extends React.Component {
             },
           },
           chart: {
+            events: {
+              mounted: () => console.log('mounted', type),
+              updated: () => {
+                console.log('updated to ' + type)
+                }
+            },
             id: this.props.title
           },
           stroke: {
@@ -230,6 +268,12 @@ class SampleChart extends React.Component {
             },
           },
           chart: {
+            events: {
+              mounted: () => console.log('mounted', type),
+              updated: () => {
+                console.log('updated to ' + type)
+                }
+            },
             id: this.props.title
           },
           stroke: {
@@ -268,6 +312,12 @@ class SampleChart extends React.Component {
             },
           },
           chart: {
+            events: {
+              mounted: () => console.log('mounted', type),
+              updated: () => {
+                console.log('updated to ' + type)
+                }
+            },
             id: this.props.title
           },
           stroke: {
@@ -290,7 +340,17 @@ class SampleChart extends React.Component {
     }
   }
 
+  waitOnRender = () => {
+    setTimeout(() => {
+      console.log('timeout done')
+      return this.decideOnChart(this.props.chartType)
+    },
+    3000
+    )
+  }
+
   render() {
+    console.log('render', this.props)
     return (
       <Container>
         {this.props.inspect ? 
@@ -323,7 +383,7 @@ class SampleChart extends React.Component {
                 this.props.quick   ? '225' : '90%'}
         />
         :
-        this.decideOnChart(this.props.type)
+        this.decideOnChart(this.props.chartType)
         
         }
       </Container>
@@ -337,4 +397,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, null)(SampleChart);
+export default connect(mapStateToProps, null)(UserChart);

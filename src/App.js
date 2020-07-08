@@ -16,6 +16,9 @@ import styled from 'styled-components'
 const Styles = styled.div`
 `
 class App extends React.Component {
+  state={
+    showNav: true
+  }
   componentWillMount() {
     localStorage.getItem('user') ?
 
@@ -48,6 +51,7 @@ class App extends React.Component {
         let filteredData = data.filter((entry) => {
           return entry.user_id === this.props.current_user.id
         })
+        filteredData.reverse()
           this.props.fetchDatasets(filteredData)
       })
     }
@@ -58,6 +62,7 @@ class App extends React.Component {
       <Styles>
         <Router>
         <Row style={{ marginLeft: 0, marginRight: 0 }}>
+          
           <Col xs={2} style={{
             paddingRight: 0, 
             paddingLeft: 0,

@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import DashTutorial from './DashTutorial'
 import TrackerTutorial from './TrackerTutorial'
 import GroupTutorial from './GroupTutorial'
-import ExploreLineChart from './ExploreLineChart'
 import {Row,Container, Col, ListGroup, Image } from 'react-bootstrap'
 
 const Styles = styled.div`
@@ -18,7 +17,7 @@ const Styles = styled.div`
         animation: fade 2s linear;
     }
     .welcome-primary {
-        color: white;
+        color: #f7f7f7;
         font-size: 2.5rem;
         margin-top: 2vh;
     }
@@ -91,9 +90,7 @@ class Explore extends React.Component {
     renderTutorial = () => {
         return  this.state.view === 0 ?
             <DashTutorial/>   :
-        this.state.view === 1 ?
-            <TrackerTutorial/>:
-            <GroupTutorial/>
+            <TrackerTutorial/>
     }
     changeView = (value) => {
         this.setState({
@@ -127,9 +124,6 @@ class Explore extends React.Component {
                                 <ListGroup.Item 
                                 onClick={() => this.changeView(1)}
                                 className='item'>Creating a Tracker</ListGroup.Item>
-                                <ListGroup.Item 
-                                onClick={() => this.changeView(2)}
-                                className='item'>Groups</ListGroup.Item>
                             </ListGroup>
                         </Col>
                         <Col xs={10}>

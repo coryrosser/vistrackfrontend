@@ -2,7 +2,6 @@ import React from 'react'
 import {Table} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import styled from 'styled-components'
-import DataTable from 'react'
 
 const Styles = styled.div`
     height: 100%;
@@ -25,7 +24,7 @@ class DashTable extends React.Component {
                     <td>{entry.dataset_series.length}</td>
                     
                     <td>{
-                    entry.user ? entry.user.email : 'No Email Associated'}</td>
+                    entry ? entry.notes.length : 'No Email Associated'}</td>
                 </tr>
             )
         })
@@ -38,7 +37,7 @@ class DashTable extends React.Component {
                     <tr>
                     <th>Title</th>
                     <th>Data Points</th>
-                    <th>Group</th>
+                    <th>Notes</th>
                     </tr>
                 </thead>
                 <tbody>

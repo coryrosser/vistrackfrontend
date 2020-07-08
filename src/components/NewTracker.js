@@ -1,8 +1,8 @@
 import React from 'react'
 import Papa from 'papaparse'
-import {Row, Col, Form, Button, Dropdown, 
-    DropdownButton, Modal, ListGroup
+import {Row, Col, Form, Button, Modal, ListGroup
     ,Card,Accordion} from 'react-bootstrap'
+import {FaSave} from 'react-icons/fa'
 import styled from 'styled-components'
 import {SwatchesPicker} from 'react-color'
 import UserChart from './UserChart'
@@ -12,12 +12,38 @@ import { withRouter } from 'react-router-dom'
 const Styles = styled.div`
     background: #ebf3f7;
     overflow: hidden;
+    .line-opt-row {
+        align-items:center;
+        justify-content: center;
+    }
+    .line-opt-item {
+        font-size: 1rem;
+        margin-top: 1vh;
+    }
+    .range-slider {
+        background: red;
+    }
+    .file-up {
+        cursor: pointer;
+        border-radius: 10px;
+        color: #f7f7f7;
+        width: 80%;
+        position: absolute;
+        bottom: 100px;
+        right: 0vw;
+    }
+    .sub-btn {
+        position: absolute;
+        font-size: 1rem;
+        bottom: 15px;
+        right: 7.5vw;
+    }
     .list-accordion {
         color: #444;
         border: none !important;
         margin: 0 !important;
         padding: 0 !important;
-        font-size: 1.2rem;
+        font-size: 1.25rem;
         &:hover {
             background: rgb(0,0,0,0.2);
             transition: 0.3s;
@@ -42,6 +68,7 @@ const Styles = styled.div`
     .accordion-card {
         color: #444;
         border: none;
+        background:#ebf3f7 ;
     }
     .option-row-drop {
         justify-content: center;
@@ -50,54 +77,67 @@ const Styles = styled.div`
         background: #ebf3f7;
         border: none;
         border-bottom: #02c39a solid 1px;
-        color: #222;
+        color: #444;
     }
     .item-light {
-        background: #f7f7f7;
+        background: #ebf3f7;
         border: none;
+        font-size: 1.25rem;
         border-bottom: #02c39a solid 1px;
-        color: #222;
+        color: #444;
         cursor: pointer;
         &:hover {
             background: #444;
-            color: #f7f7f7;
-            transition: 1s;
+            color: #ebf3f7;
+            transition: .5s;
         }
     }
     .item-dark {
         background: #444;
-        color: #f7f7f7;
+        color: #ebf3f7;
         border: none;
+        font-size: 1.25rem;
         border-bottom: #02c39a solid 1px;
         cursor: pointer;
         &:hover {
-            background: #f7f7f7;
-            color: #222;
-            transition: 1s;
+            background: #ebf3f7;
+            color: #444;
+            transition: .5s;
         }
+    }
+    .color-text {
+        font-size: 1.25rem;
     }
     .title-row {
         width: 100%;
         margin-left: 0;
         background: #02c39a;
         height: 5vh;
-        color: #f7f7f7;
+        text-align:center;
+        align-items:center;
+        justify-content:center;
+        color: #444;
     }
     .tracker-form {
         max-width: 75%;
+        height: 100%;
         margin-left:auto;
         margin-right:auto;
     }
     .title-text {
-        margin-left: auto;
-        margin-right: auto;
+        margin-left: 25%;
         font-size: 2rem;
     }
     .form-col {
         background: #02c39a;
         height: 95vh;
         text-align: center;
-        color: #f7f7f7;
+        color: #444;
+    }
+    button {
+        background: rgb(42, 157, 244);
+        border: rgb(42, 157, 244, 0.5);
+
     }
     .content-col {
         background:black;
@@ -110,6 +150,8 @@ const Styles = styled.div`
     }
     .remove-btn {
         height: 3vh;
+        margin-top: 5px;
+        background: #ee3e38;
     }
     .options-row {
         background: #ebf3f7;
@@ -132,7 +174,8 @@ const Styles = styled.div`
     }
     .color-title {
         justify-content: center;
-        color: #222;
+        color: #444;
+        font-size: 1.25rem;
         background:rgb(2, 195, 154, 0.3);
     }
     .palette-list {
@@ -306,15 +349,19 @@ const Styles = styled.div`
     .c-50{
         background: #00b1f2
     }
+
+    .bottom-form {
+        margin-bottom: 10%;
+    }
 `
 
 
 class NewTracker extends React.Component {
     state={
         seriesInputs: [],
-        categories: ['test', 'test2','test3'],
-        data: [12,32,24],
-        chartType: 'line',
+        categories: [''],
+        data: [''],
+        chartType: 'bar',
         title: '',
         name: '',
         value: '',
@@ -325,6 +372,7 @@ class NewTracker extends React.Component {
         file: [],
         keys: [],
         mode: 'light',
+        curve: 'straight',
         palette: 'palette1',
         showChart: true,
         width: 5,
@@ -472,7 +520,6 @@ class NewTracker extends React.Component {
             <Button variant="secondary" onClick={() => this.handleClose()}>
                 Close
             </Button>
-            <Button variant="primary">Understood</Button>
             </Modal.Footer>
     </Modal>
         )
@@ -608,7 +655,9 @@ class NewTracker extends React.Component {
                 this.pickUserKeys(this.state.keys) :
                 ''}
             <Row className='title-row'>
-                <div className='title-text'>Create Your New Tracker</div>
+                <div className='title-text'> {this.state.title ?
+                                            <>Title:  {this.state.title}</> :
+                'New Tracker'}</div>
             </Row>
             <Row >
                 <Col 
@@ -620,7 +669,7 @@ class NewTracker extends React.Component {
                         this.submitTrackerForm()}}
                     className='tracker-form'>
                         <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Tracker Title</Form.Label>
+                        <Form.Label className='color-title'>Tracker Title</Form.Label>
                         <Form.Control
                         name
                         value={this.state.title}
@@ -630,54 +679,52 @@ class NewTracker extends React.Component {
                         placeholder="Enter Title" />
                         </Form.Group>
                         <Form.Group controlId="formBasicEmail">
-                        <Form.Label>X-Axis Title</Form.Label>
+                        <Form.Label className='color-title'>X-Axis Title</Form.Label>
                         <Form.Control
                             name={this.state.Xaxis}
                             value={this.state.Xaxis}
                             onChange={(e) => this.setState({Xaxis: e.target.value})}
                         placeholder="Enter Title" />
                         </Form.Group>
-                        <Form.Row>
-                        <Form.Group as={Col} controlId="formBasicEmail">
-                        <Form.Label>X-Axis Labels</Form.Label>
-                        </Form.Group>
-                        <Form.Group as={Col} controlId="formBasicEmail">
-                        <Form.Label>X-Axis Data Values</Form.Label>
-                        </Form.Group>
-                        </Form.Row>
-                        {this.renderFormUI()}
                         <Button 
-                        size='sm'
+                        className='mb-3'
                         onClick={(e) => {
                             this.addClick()
                         }} >
                         Add Data Point
                         </Button>
-                        <Row>
-                        <Button 
-                        type='submit'
-                        className='ml-auto mr-auto mt-4'>
-                            Create Tracker
-                        </Button>
-                        </Row>
-                        </Form>
-                        <Form className='tracker-form mt-5'>
-                            <Form.Group>
+                        
+                        {this.renderFormUI()}
+
+                        <Row className='bottom-form'>
+                        <Form.Group className='file-form-group'>
                                 <Form.Row 
-                                className='justify-content-center'><Form.Label>Upload From File</Form.Label></Form.Row>
+                                className='justify-content-center'><Form.Label></Form.Label></Form.Row>
                                 
                                 <Form.File
                                 className='file-up'
+                                custom
                                 >
-                                    <Form.File.Input
-                                    
+                                <Form.File.Input
+                                className='file-input'
+                                custom
+                                label='File Upload'
                                 onChange={e => {
                                     this.handleFileUpload(e)
                                     e.preventDefault()
                                     
                                 }}/>
+                                <Form.File.Label 
+                                className='file-up'
+                                data-browse="File Upload"></Form.File.Label>
                                 </Form.File>
                             </Form.Group>
+                        <Button 
+                        type='submit'
+                        className='ml-auto mr-auto mt-4 sub-btn'>
+                            <FaSave className='icon'/> Save Tracker
+                        </Button>
+                        </Row>
                         </Form>
 
                 </Col>
@@ -701,7 +748,7 @@ class NewTracker extends React.Component {
                     </Row>
                     <Row className='options-row'>
                     <Col className='option-col' xs={6}>
-                    <Row className='color-title'><h3>Color Palette</h3></Row>
+                    <Row className='color-title'><div className='color-text'>Color Palette</div></Row>
                     
                     <Row 
                     className='color-row'>
@@ -836,7 +883,7 @@ class NewTracker extends React.Component {
                     </Row>
                     </Col>
                     <Col className='option-col' xs={6}>
-                        <Row className='color-title'><h3>Options</h3></Row>
+                        <Row className='color-title'><div className='color-text'>Options</div></Row>
                         <Row className='option-row'>
                         <ListGroup
                         className='palette-list'
@@ -849,8 +896,8 @@ class NewTracker extends React.Component {
                                                     'item-light' :
                                                     'item-dark'}>
                             {this.state.mode === 'light' ?
-                            <h6>Activate Dark-Mode</h6> :
-                            <h6>Activate Light-Mode</h6>}
+                            <p>Activate Dark-Mode</p> :
+                            <p>Activate Light-Mode</p>}
                             </ListGroup.Item>
                             <ListGroup.Item
                             className='option-item'>
@@ -898,37 +945,42 @@ class NewTracker extends React.Component {
                             
                             </ListGroup.Item>
                         </ListGroup>
+                            {
+                        this.state.chartType === 'line'  ?
+                        <>
                         <Col xs={6}>
-                            <Row className='color-title'><h4>Line Graph Curve</h4></Row>
-                            
-                                {['straight', 'smooth', 'stepline'].map((entry) =>{
-                                    return(
-                                        <Row className='line-opt-row'>
-                                        <Form.Check
-                                        type='radio'
-                                        name='line-type'
-                                        onChange={() => {this.setCurve(entry)}}
-                                        label={entry.charAt(0).toUpperCase() + entry.slice(1)}/>
-                                        </Row>
-                                    )
-                                })}
-                            
-                        </Col>
-                        <Col xs={6}>
-                            <Row className='color-title'><h4>Line Width</h4></Row>
-                            <Row>
-                            <Form>
-                            <Form.Group controlId="formBasicRange">
-                            <Form.Label>Change your line width</Form.Label>
-                            <Form.Control 
-                            defaultValue={4}
-                            onChange={(e) => this.handleWidthChange(e.target.value)}
-                            type="range" />
-                            </Form.Group>
-                            </Form>
-                            </Row>
-                        </Col>
-
+                        <Row className='color-title'><h4>Line Graph Curve</h4></Row>
+                        
+                            {['straight', 'smooth', 'stepline'].map((entry) =>{
+                                return(
+                                    <Row className='line-opt-row ml-auto mr-auto'>
+                                    <Form.Check
+                                    className='line-opt-item'
+                                    type='radio'
+                                    name='line-type'
+                                    onChange={() => {this.setCurve(entry)}}
+                                    label={entry.charAt(0).toUpperCase() + entry.slice(1)}/>
+                                    </Row>
+                                )
+                            })}
+                        
+                    </Col>
+                    <Col xs={6}>
+                        <Row className='color-title'><h4>Line Width</h4></Row>
+                        <Row className='line-opt-row'>
+                        <Form>
+                        <Form.Group controlId="formBasicRange">
+                        <Form.Label className='line-opt-item'>Change your line width</Form.Label>
+                        <Form.Control 
+                        className='range-slider'
+                        defaultValue={4}
+                        onChange={(e) => this.handleWidthChange(e.target.value)}
+                        type="range" />
+                        </Form.Group>
+                        </Form>
+                        </Row>
+                    </Col> </> : 
+                    <></>}
                         </Row>
                     </Col>
 

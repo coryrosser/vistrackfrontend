@@ -19,7 +19,7 @@ const Styles = styled.div`
         margin-left: 0;
         background: #02c39a;
         height: 5vh;
-        color: #f7f7f7;
+        color: #444;
     }
     .filler-row {
         width: 100%;
@@ -32,7 +32,7 @@ const Styles = styled.div`
     .inspect-alt {
         margin-left: auto; 
         margin-right: auto;
-        color: #f7f7f7;
+        color: #444;
     }
     .title-text {
         margin-left: auto;
@@ -71,6 +71,16 @@ class Dashboard extends React.Component {
     state={
         inspected: '',
     }
+    renderInspected = () => {
+        if(this.props.inspectedDataset){  
+            return <InspectPanel />
+        } else {
+            return <Row className='filler-row'>
+            <div className='title-text'> Click an item on the left to inspect it!</div>
+            </Row>
+        }
+            
+    }
     renderQuickView = (datasets) => {
         console.log(datasets)
         return datasets.map(entry => {
@@ -87,10 +97,12 @@ class Dashboard extends React.Component {
                     className='card' >
                         <Card.Body>
                             <UserChart 
+                            curve={entry.curve}
+                            width={entry.width}
                             mode={entry.mode}
                             palette={entry.palette}
                             quick='true'
-                            type={entry.chart_type}
+                            chartType={entry.chart_type}
                             title={entry.title ? entry.title : "Untitled-Tracker"}
                             categories={names}
                             data={points}
@@ -139,12 +151,7 @@ class Dashboard extends React.Component {
                     </Col>
                     <Col xs={5}>
                         <div className='control-panel'>
-                            {this.props.inspectedDataset ? 
-                            <InspectPanel />
-                                :
-                            <Row className='filler-row'>
-                                <h3 className='inspect-alt'> Click an item on the left to inspect it!</h3>
-                            </Row>
+                            { this.renderInspected()
                             }
                         </div>
                     </Col>

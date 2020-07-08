@@ -81,16 +81,11 @@ class InspectPanel extends React.Component {
         subject: '',
         content: '',
         notes: [],
-        dataset: {}
-    }
-    componentWillUnmount() {
-        this.setState({
-            notes: []
-        })
+        dataset: {},
     }
     componentDidMount() {
         if (this.props.inspectedDataset) {
-            this.setState({notes: this.props.inspectedDataset.notes,
+            this.setState({notes: [...this.props.inspectedDataset.notes]
             })
         }
     }
@@ -173,14 +168,19 @@ class InspectPanel extends React.Component {
     render() {
         return (
             <Styles>
-                {this.state.view === 0 ?
+                {
+                this.state.view === 0 ?
                 <UserChart 
-                    inspect='true'
-                    type={this.set.chart_type}
-                    title={this.set.title ? this.set.title : "Untitled-Tracker"}
-                    categories={this.names}
-                    data={this.points}
-                /> 
+                palette={this.set.palette}
+                mode={this.set.mode}
+                curve={this.set.curve}
+                width={this.set.width}
+                inspect='true'
+                chartType={this.set.chart_type}
+                title={this.set.title ? this.set.title : "Untitled-Tracker"}
+                categories={this.names}
+                data={this.points}
+            /> 
                 : this.state.view === 1 ?
                 <div>
                 <Row className='panel-row'>

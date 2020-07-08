@@ -27,19 +27,6 @@ class UserChart extends React.Component {
             },
           },
           chart: {
-              dropShadow: {
-              enabled: true,
-              top: 0,
-              left: 0,
-              blur: 3,
-              opacity: 0.5
-            },
-            events: {
-              mounted: () => console.log('mounted', type),
-              updated: () => {
-                console.log('updated to ' + type)
-                }
-            },
             id: this.props.title
           },
           stroke: {
@@ -81,12 +68,6 @@ class UserChart extends React.Component {
             },
           },
           chart: {
-            events: {
-              mounted: () => console.log('mounted', type),
-              updated: () => {
-                console.log('updated to ' + type)
-                }
-            },
             id: this.props.title
           },
           stroke: {
@@ -128,12 +109,6 @@ class UserChart extends React.Component {
             },
           },
           chart: {
-            events: {
-              mounted: () => console.log('mounted', type),
-              updated: () => {
-                console.log('updated to ' + type)
-                }
-            },
             id: this.props.title
           },
           stroke: {
@@ -175,12 +150,6 @@ class UserChart extends React.Component {
             },
           },
           chart: {
-            events: {
-              mounted: () => console.log('mounted', type),
-              updated: () => {
-                console.log('updated to ' + type)
-                }
-            },
             id: this.props.title
           },
           stroke: {
@@ -221,12 +190,6 @@ class UserChart extends React.Component {
             },
           },
           chart: {
-            events: {
-              mounted: () => console.log('mounted', type),
-              updated: () => {
-                console.log('updated to ' + type)
-                }
-            },
             id: this.props.title
           },
           stroke: {
@@ -268,12 +231,6 @@ class UserChart extends React.Component {
             },
           },
           chart: {
-            events: {
-              mounted: () => console.log('mounted', type),
-              updated: () => {
-                console.log('updated to ' + type)
-                }
-            },
             id: this.props.title
           },
           stroke: {
@@ -312,12 +269,6 @@ class UserChart extends React.Component {
             },
           },
           chart: {
-            events: {
-              mounted: () => console.log('mounted', type),
-              updated: () => {
-                console.log('updated to ' + type)
-                }
-            },
             id: this.props.title
           },
           stroke: {
@@ -340,20 +291,10 @@ class UserChart extends React.Component {
     }
   }
 
-  waitOnRender = () => {
-    setTimeout(() => {
-      console.log('timeout done')
-      return this.decideOnChart(this.props.chartType)
-    },
-    3000
-    )
-  }
-
   render() {
-    console.log('render', this.props)
     return (
       <Container>
-        {this.props.inspect ? 
+        {/* {this.props.inspect ? 
         <Chart
         options={{
           theme: {
@@ -381,11 +322,11 @@ class UserChart extends React.Component {
         type={this.props.inspectedDataset.chart_type}
         height={this.props.inspect ? '322' : 
                 this.props.quick   ? '225' : '90%'}
-        />
-        :
-        this.decideOnChart(this.props.chartType)
+        /> */}
+        {/* : */}
+        {this.decideOnChart(this.props.chartType)}
         
-        }
+        {/* } */}
       </Container>
     )
   }

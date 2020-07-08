@@ -66,9 +66,9 @@ const SideNav = (props) => {
                 </> :
                 ''
                 }
-                <ListGroup.Item className='item'>
+                {/* <ListGroup.Item className='item'>
                     <a href='/visteams'>VisTeams</a>
-                </ListGroup.Item>
+                </ListGroup.Item> */}
                 
                 {props.isLoggedIn ?
                 <ListGroup.Item className='item'>
@@ -84,9 +84,9 @@ const SideNav = (props) => {
                 <ListGroup.Item className='item'>
                     <a href='/login'>Log In</a>
                 </ListGroup.Item>                
-                <ListGroup.Item className='item'>
+                {/* <ListGroup.Item className='item'>
                     <a href='/signup'>Sign Up</a>
-                </ListGroup.Item>
+                </ListGroup.Item> */}
                 </>
                 }
                 

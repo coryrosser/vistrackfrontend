@@ -1,42 +1,94 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Form, Button, Col } from 'react-bootstrap'
+import { Form, Button, Card,Row, Col, InputGroup} from 'react-bootstrap'
+import {FaLock, FaEnvelope, FaUser} from 'react-icons/fa'
 import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 
+
 const Styles = styled.div`
-background: url(https://bit.ly/2NrvjD2);
-height: 100%;
-.contain {
-    background: rgba(0,0,0,0.4);
+    background: url(https://bit.ly/2NrvjD2);
     height: 100%;
-    margin-top: 0;
-    display: block;
-    overflow: hidden;
-}
-.signup-form {
-    margin-top: 20vh;
-    text-align: center;
-    font-size: 1.4rem;
-    width: 80%;
-    color: #f7f7f7;
-    text-align: center;
-    margin-left:auto;
-    margin-right:auto;
-}
-.user-input {
-    color: #f7f7f7;
-    background: rgb(255,255,255, 0.02);
-    border: none;
-    border-bottom: #f7f7f7 solid 1px;
-    &:hover {
-        background: rgb(255,255,255, 0.4);
-        transition: 0.3s;
+    .icon {
+        color: #444;
+    }
+    .contain {
+        background: rgba(0,0,0,0.4);
+        height: 100%;
+        margin-top: 0;
+        align-items: center;
+        display: block;
+        overflow: hidden;
+    }
+    .login-form {
+        margin-top: 0vh;
+        text-align: center;
+        font-size: 1.4rem;
+    }
+    .email, .pass {
+        color: #444;
+        max-width: 60%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .user-input {
+        color: #444;
+        border: none;
+        border-radius: 0;
+        border-bottom: #888 solid 1px;
+        &:hover {
+            transition: 0.3s;
+            border: none;
+        }
+}    
+    .form-card {
+        box-shadow: 0px 0px 50px rgb(0,0,0,0.5);
+        background: #ebf3f7;
+        margin-top: 15vh;
+        width: 50%;
+        height: 75vh;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    .prepend {
+        background :#ebf3f7;
+        border: none;
+    }
+    .form-header {
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 3vh;
+        font-size: 3rem;
+        color: #444;
+    }
+    }
+    .form-header2 {
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 1vh;
+        font-size: 1.5rem;
+        color: #444;
+    }
+    }
+    .prepend-text {
+        border: none;
+        border-radius: 0 0 0 10px;
+        background: #ebf3f7;
+        border-bottom: #888 solid 1px;
+    }
+    .sub-btn {
+        color: #f7f7f7;
+        background: rgb(42, 157, 244);
+        width: 40%;
+        border: none;
+        &:hover {
+            background: rgb(2, 195, 154, 0.4);
+            color: #444;
+            transition: 0.3s;
+        }
     }
 
-}
 `
-
 class SignUp extends React.Component {
 
     state={
@@ -85,78 +137,79 @@ class SignUp extends React.Component {
         return (
             <Styles>
                 <div className='contain'>
+                <Card className='form-card'>
+                    
+                <p className='form-header'>Sign Up</p>
+                    <p className='form-header2'>Welcome to VisTrack</p>
                 <Form
-            className='signup-form'
-            onSubmit={(e) => {
+                className='login-form'
+                onSubmit={(e) => {
                 e.preventDefault()
                 this.submitUserSignup(this.state)}}>
-            <Form.Row>
-                <Form.Group as={Col} controlId="formGridFirstName">
-                <Form.Label>First Name</Form.Label>
-                <Form.Control 
+                <Form.Group className='email' controlId="formGridFirstName">
+                
+                <InputGroup>
+                    <InputGroup.Prepend className='prepend'> 
+                    <InputGroup.Text className='prepend-text'><FaUser className='icon'/></InputGroup.Text>
+                    </InputGroup.Prepend>
+                <Form.Control
+                placeholder='First Name'
                 className='user-input'
                 value={this.state.first_name}
                 onChange={e => this.setFirstName(e.target.value)}
                 type="text" />
+                </InputGroup>
                 </Form.Group>
 
-                <Form.Group as={Col} controlId="formGridLastName">
-                <Form.Label>Last Name</Form.Label>
-                <Form.Control 
+                <Form.Group className='email' controlId="formGridLastName">
+                <Form.Label></Form.Label>
+                <InputGroup>
+                    <InputGroup.Prepend className='prepend'> 
+                    <InputGroup.Text className='prepend-text'><FaUser className='icon'/></InputGroup.Text>
+                    </InputGroup.Prepend>
+                <Form.Control
+                placeholder='Last Name'
                 className='user-input'
                 value={this.state.last_name}
                 onChange={e => this.setLastName(e.target.value)}
                 type="text"  />
+                </InputGroup>
             </Form.Group>
-            </Form.Row>
-            <Form.Row>
-              <Form.Group as={Col} controlId="formGridEmail">
-                <Form.Label>Email</Form.Label>
-                <Form.Control 
+                <Form.Group className='email' controlId="formGridEmail">
+                <Form.Label></Form.Label>
+                <InputGroup>
+                    <InputGroup.Prepend className='prepend'> 
+                    <InputGroup.Text className='prepend-text'><FaEnvelope className='icon'/></InputGroup.Text>
+                    </InputGroup.Prepend>
+                <Form.Control
+                placeholder='Email'
                 className='user-input'
                 value={this.state.email}
                 onChange={e => this.setEmail(e.target.value)}
                 type="text" />
+                </InputGroup>
                 </Form.Group>
 
-                <Form.Group as={Col} controlId="formGridPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control 
+                <Form.Group className='email' controlId="formGridPassword">
+                <Form.Label></Form.Label>
+                <InputGroup>
+                    <InputGroup.Prepend className='prepend'> 
+                    <InputGroup.Text className='prepend-text'><FaLock className='icon'/></InputGroup.Text>
+                    </InputGroup.Prepend>
+                <Form.Control
+                placeholder='Password'
                 className='user-input'
                 value={this.state.password}
                 onChange={e => this.setPassword(e.target.value)}
                 type="password" />
+                </InputGroup>
             </Form.Group>
-            </Form.Row>
-          
-            <Form.Group controlId="formGridAddress2">
-                <Form.Label>Location</Form.Label>
-                <Form.Control 
-                className='user-input'
-                value={this.state.location}
-                onChange={e => this.setLocation(e.target.value)}/>
-            </Form.Group>
-          
-            <Form.Row>
-          
-            <Form.Group as={Col} controlId="formGridState">
-                <Form.Label>Are you creating a business or personal account?
-                </Form.Label>
-            <Form.Control 
-                className='user-input'
-                value={this.state.role}
-                onChange={e => this.setRole(e.target.value)}
-                as="select" defaultValue="Choose...">
-                <option value='1'>Business</option>
-                <option value='2'>Personal</option>
-                </Form.Control>
-            </Form.Group>
-            </Form.Row>
-            <Button variant="primary" type="submit">
+            <Button className='sub-btn' type="submit">
             Submit
             </Button>
             
         </Form>
+                </Card>
                 </div>
             </Styles>
         )

@@ -10,6 +10,9 @@ const Styles = styled.div`
         background: rgb(2, 195, 154, 0.5);
         color: #333;
     }
+    .table-title {
+        size: 1.25rem;
+    }
 `
 
 class DashTable extends React.Component {
@@ -35,15 +38,15 @@ class DashTable extends React.Component {
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                    <th>Title</th>
-                    <th>Data Points</th>
-                    <th>Notes</th>
+                    <th className='table-title'>Title</th>
+                    <th className='table-title'>Data Points</th>
+                    <th className='table-title'>Notes</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
                     this.props.datasets ?
-                    this.makeTableRows(this.props.datasets)
+                    this.makeTableRows(this.props.datasets.reverse())
                     :
                     <tr>Loading Data...</tr>}
                 </tbody>

@@ -14,6 +14,8 @@ import NewTracker from './components/NewTracker'
 import styled from 'styled-components'
 
 const Styles = styled.div`
+
+font-family: 'Roboto', sans-serif;
 `
 class App extends React.Component {
   state={

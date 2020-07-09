@@ -48,9 +48,9 @@ const SideNav = (props) => {
                 <a href='/' className='brand'>VisTrack</a>
             </Row>
             <ListGroup className='group'>
-                <ListGroup.Item className='item'>
+                {/* <ListGroup.Item className='item'>
                     <a href='/explore'>Explore</a>
-                </ListGroup.Item>
+                </ListGroup.Item> */}
                 {
                     props.isLoggedIn ?
                     <>

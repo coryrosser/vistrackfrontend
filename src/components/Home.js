@@ -4,7 +4,9 @@ import {Row, Col, Image} from 'react-bootstrap'
 import {FaChartBar, FaSlidersH, FaSave} from 'react-icons/fa'
 
 const Styles = styled.div`
-    background: url(https://bit.ly/2NrvjD2);
+    background: url('https://bit.ly/2ZaEFd9');
+    background-repeat: no-repeat;
+    background-size: cover;
     height: 100vh;
     z-index: 0;
 
@@ -35,7 +37,7 @@ const Styles = styled.div`
     .container-home {
         overflow: hidden;
         z-index: 2;
-        background: rgb(0,0,0,0.4);
+        background:rgb(42, 157, 244, 0.3);
         height: 100vh;
         width: 100%;
     }
@@ -50,7 +52,7 @@ const Styles = styled.div`
         margin-top: 10vh;
     }
     .title-white { 
-        color: white;
+        color: #02c39a;
         font-size: 5rem;
         margin-left: auto;
         margin-right: auto;

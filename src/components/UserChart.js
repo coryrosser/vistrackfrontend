@@ -13,15 +13,22 @@ class UserChart extends React.Component {
       return (
         <Chart
         options={{
-          dataLabels: {
-            enabled: true
+          legend: {
+            show:false
           },
+          
           labels: [...this.props.categories],
           theme: {
             mode: this.props.mode,
             palette: this.props.palette,
           },
           plotOptions: {
+            
+          dataLabels: {
+            show: false,
+            name: {show: false},
+            value: {show: false}
+          },
             bar: {
               distributed: true
             },
@@ -33,7 +40,10 @@ class UserChart extends React.Component {
             curve: 'straight',
           },
           xaxis: {
-            categories: this.props.categories
+            categories: this.props.categories,
+            labels: {
+              show: this.props.quick ? false : true
+            }
           },
           labels: this.props.type === 'pie' ? this.props.categories : [],
           noData: {
@@ -46,8 +56,9 @@ class UserChart extends React.Component {
           data: this.props.data
         }]}
         type='bar'
-        height={this.props.inspect ? '322' : 
-                this.props.quick   ? '200' : '90%'}
+        width={'100%'}
+        height={this.props.inspect ? '295' : 
+                this.props.quick   ? '90%' : '90%'}
         />
       )
     } else if (type === 'line') {
@@ -55,7 +66,9 @@ class UserChart extends React.Component {
         <Chart
         options={{
           dataLabels: {
-            enabled: true
+            show: false,
+            name: {show: false},
+            value: {show: false}
           },
           labels: [...this.props.categories],
           theme: {
@@ -87,8 +100,8 @@ class UserChart extends React.Component {
           data: this.props.data
         }]}
         type='line'
-        height={this.props.inspect ? '322' : 
-                this.props.quick   ? '200' : '90%'}
+        height={this.props.inspect ? '295' : 
+                this.props.quick   ? '90%' : '90%'}
         />
       )
     } else if (type === 'area') {
@@ -96,7 +109,7 @@ class UserChart extends React.Component {
         <Chart
         options={{
           dataLabels: {
-            enabled: true
+            enabled: this.props.quick ? false : true
           },
           labels: [...this.props.categories],
           theme: {
@@ -128,8 +141,8 @@ class UserChart extends React.Component {
           data: this.props.data
         }]}
         type='area'
-        height={this.props.inspect ? '322' : 
-                this.props.quick   ? '200' : '90%'}
+        height={this.props.inspect ? '295' : 
+                this.props.quick   ? '90%' : '90%'}
         />
       )
     } else if (type === 'radar') {
@@ -137,7 +150,9 @@ class UserChart extends React.Component {
         <Chart
         options={{
           dataLabels: {
-            enabled: true
+            show: false,
+            name: {show: false},
+            value: {show: false}
           },
           labels: [...this.props.categories],
           theme: {
@@ -168,8 +183,8 @@ class UserChart extends React.Component {
           data: this.props.data
         }]}
         type='radar'
-        height={this.props.inspect ? '322' : 
-                this.props.quick   ? '200' : '90%'}
+        height={this.props.inspect ? '295' : 
+                this.props.quick   ? '90%' : '90%'}
         />
       )
     } else if (type ==='candlestick') {
@@ -177,7 +192,7 @@ class UserChart extends React.Component {
         <Chart
         options={{
           dataLabels: {
-            enabled: true
+            enabled: this.props.quick ? false : true
           },
           labels: [...this.props.categories],
           theme: {
@@ -208,8 +223,8 @@ class UserChart extends React.Component {
           data: this.props.data
         }]}
         type='candlestick'
-        height={this.props.inspect ? '322' : 
-                this.props.quick   ? '200' : '90%'}
+        height={this.props.inspect ? '295' : 
+                this.props.quick   ? '90%' : '90%'}
         />
       )
     } else if (type ==='donut') {
@@ -217,7 +232,7 @@ class UserChart extends React.Component {
         <Chart
         options={{
           dataLabels: {
-            enabled: true
+            enabled: this.props.quick ? false : true
           },
           chartOptions: {labels: [...this.props.categories]},
           series: [...this.props.data],
@@ -246,8 +261,8 @@ class UserChart extends React.Component {
         
         series={this.props.data}
         type='donut'
-        height={this.props.inspect ? '322' : 
-                this.props.quick   ? '200' : '90%'}
+        height={this.props.inspect ? '295' : 
+                this.props.quick   ? '90%' : '90%'}
         />
       )
     } else if (type === 'pie') {
@@ -255,7 +270,7 @@ class UserChart extends React.Component {
         <Chart
         options={{
           dataLabels: {
-            enabled: true
+            enabled: this.props.quick ? false : true
           },
           chartOptions: {labels: [...this.props.categories]},
           series: [...this.props.data],
@@ -284,8 +299,50 @@ class UserChart extends React.Component {
         
         series={this.props.data}
         type='pie'
-        height={this.props.inspect ? '322' : 
-                this.props.quick   ? '200' : '90%'}
+        height={this.props.inspect ? '295' : 
+                this.props.quick   ? '90%' : '90%'}
+        />
+      )
+    } else if (type === 'radialBar') {
+      return (
+        <Chart
+        options= {{
+          legend: {
+            show: true,
+            floating: true,
+            fontSize: '16px',
+            position: 'left',
+            offsetX: 160,
+            offsetY: 15,
+            labels: {
+              useSeriesColors: true,
+          }},
+          theme: {
+            mode: this.props.mode,
+            palette: this.props.palette,
+          },
+          chart: {
+            height: 350,
+            type: 'radialBar',
+          },
+          plotOptions: {
+            radialBar: {
+              dataLabels: {
+                enabled: this.props.quick ? false : true,
+                name: {
+                  fontSize: '22px',
+                  color: '#444444'
+                },
+                value: {
+                  fontSize: '16px',
+                  color: '#444444'
+                },
+              }
+        }}}}
+        series={this.props.data}
+        type='radialBar'
+        height={this.props.inspect ? '295' : 
+                this.props.quick   ? '90%' : '90%'}
         />
       )
     }
@@ -320,8 +377,8 @@ class UserChart extends React.Component {
           data: this.props.inspectedDataset.dataset_series.map(entry => entry.data)
         }]}
         type={this.props.inspectedDataset.chart_type}
-        height={this.props.inspect ? '322' : 
-                this.props.quick   ? '225' : '90%'}
+        height={this.props.inspect ? '295' : 
+                this.props.quick   ? '95%' : '90%'}
         /> */}
         {/* : */}
         {this.decideOnChart(this.props.chartType)}

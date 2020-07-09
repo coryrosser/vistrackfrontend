@@ -6,7 +6,8 @@ import { Button, Row, Col, ListGroup, Table, Form, InputGroup} from 'react-boots
 
 const Styles = styled.div`
     .btn-row {
-        max-height: 20vh;
+        max-height: 22vh;
+        overflow: hidden;
         max-width: 100%;
         margin-left: 0;
         background: rgb(2, 195, 154, 0.5);
@@ -17,6 +18,7 @@ const Styles = styled.div`
         padding: 0;
     }
     .item {
+        height: 33%;
         background: linear-gradient(90deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.0) 100%);
         &:hover {
             background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.0) 100%);
@@ -26,6 +28,7 @@ const Styles = styled.div`
     }
     .btn-list {
         margin-left: 0;
+        height: 15.3vh;
     }
     .panel-row {
         width: 100%;
@@ -112,6 +115,7 @@ class InspectPanel extends React.Component {
         })
         .then(res => res.json())
         .then(newNote => {
+            console.log(newNote)
             this.setState({
                 subject: '',
                 content: '',

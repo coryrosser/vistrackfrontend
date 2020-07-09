@@ -12,31 +12,64 @@ import { withRouter } from 'react-router-dom'
 const Styles = styled.div`
     background: #ebf3f7;
     overflow: hidden;
+    .opt-col {
+        height: 26vh;
+        border-right: rgb(2, 195, 154, 0.2) solid 1px;
+        margin-left: auto;
+        margin-right: auto;
+    }
     .line-opt-row {
         align-items:center;
         justify-content: center;
+    }
+    .check-cats {
+        text-align: center;
+        justify-content: center;
+        align-items:center;
+        margin-right: auto;
+        margin-left: auto;
     }
     .line-opt-item {
         font-size: 1rem;
         margin-top: 1vh;
     }
+    }
+    .line-opt-item1 {
+        font-size: 1rem;
+        margin-top: 1vh;
+        margin-right: 25.6vw;
+    }
     .range-slider {
         background: red;
+    }
+    .file-up1 {
+        cursor: pointer;
+        width: 6vw;
+        background:rgb(42, 157, 244);
+        border: rgb(42, 157, 244, 0.5) solid 1px;
+    }
+    .file-input {
+        background:rgb(42, 157, 244);
+        border: rgb(42, 157, 244, 0.5) solid 1px;
     }
     .file-up {
         cursor: pointer;
         border-radius: 10px;
+        
+        background:rgb(42, 157, 244);
+        border: rgb(42, 157, 244, 0.5) solid 1px;
         color: #f7f7f7;
-        width: 80%;
+        width: 33%;
         position: absolute;
         bottom: 100px;
-        right: 0vw;
+        right: 3.5vw;
     }
     .sub-btn {
         position: absolute;
+        width: 10vw;
         font-size: 1rem;
         bottom: 15px;
-        right: 7.5vw;
+        right: 5vw;
     }
     .list-accordion {
         color: #444;
@@ -136,7 +169,8 @@ const Styles = styled.div`
     }
     button {
         background: rgb(42, 157, 244);
-        border: rgb(42, 157, 244, 0.5);
+        
+        border: rgb(0,0,0,0.1) solid 1px;
 
     }
     .content-col {
@@ -353,14 +387,47 @@ const Styles = styled.div`
     .bottom-form {
         margin-bottom: 10%;
     }
+    .check-row {
+        background: red;
+    }
+    .form-check{
+        text-align: center;
+        margin-left: 50vh;
+    }
+    .inputfile {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+    .inputfile + label {
+        padding: 4px;
+        cursor: pointer;
+        position: absolute;
+        width: 10vw;
+        bottom: 10vh;
+        left: 6.4vw;
+        font-size: 1.2rem;
+        color: #f7f7f7;
+        border-radius: 5px;
+        border: rgb(0,0,0,0.1) solid 1px;
+        background: rgb(42, 157, 244);
+    }
+    
+    .inputfile:focus + label,
+    .inputfile + label:hover {
+        
+    }
 `
 
 
 class NewTracker extends React.Component {
     state={
         seriesInputs: [],
-        categories: [''],
-        data: [''],
+        categories: [],
+        data: [],
         chartType: 'bar',
         title: '',
         name: '',
@@ -453,13 +520,13 @@ class NewTracker extends React.Component {
                     <Row
             className='text-align-center justify-content-center'><Form.Label>Title</Form.Label></Row>
                     <Row
-            className='text-align-center justify-content-center'><Form.Text>Please Select Your Tracker Title</Form.Text></Row>
+            className='text-align-center justify-content-center align-items-center'><Form.Text>Please Select Your Tracker Title</Form.Text></Row>
                     <Form.Group>
-                    <div className='align-items-center'>
+                    <div className='check-row'>
                     {keys.map((key) => {
                         return (
                             <Form.Check 
-                            name='check-title'
+                            name='check-title mx-auto'
                             onChange={(e) => {
                                 this.setState({
                                     title: e.target.id
@@ -700,8 +767,15 @@ class NewTracker extends React.Component {
                         <Form.Group className='file-form-group'>
                                 <Form.Row 
                                 className='justify-content-center'><Form.Label></Form.Label></Form.Row>
-                                
-                                <Form.File
+                                <input type="file" 
+                                onChange={(e) => {
+                                    this.handleFileUpload(e)
+                                    e.preventDefault()
+
+                                }}
+                                name="file" id="file" class="inputfile" />
+                                <label for="file">Choose a file</label>
+                                {/* <Form.File
                                 className='file-up'
                                 custom
                                 >
@@ -715,9 +789,10 @@ class NewTracker extends React.Component {
                                     
                                 }}/>
                                 <Form.File.Label 
-                                className='file-up'
+                                custom
+                                className='file-up1'
                                 data-browse="File Upload"></Form.File.Label>
-                                </Form.File>
+                                </Form.File> */}
                             </Form.Group>
                         <Button 
                         type='submit'
@@ -940,6 +1015,11 @@ class NewTracker extends React.Component {
                                         onClick={(e) => {this.handleChartTypeChange('donut')}}
                                         className='accordion-item'>Donut</Card.Body>
                                     </Accordion.Collapse>
+                                    <Accordion.Collapse eventKey="0">
+                                        <Card.Body 
+                                        onClick={(e) => {this.handleChartTypeChange('radialBar')}}
+                                        className='accordion-item'>Radial Bar</Card.Body>
+                                    </Accordion.Collapse>
                                     </Card>
                                 </Accordion>
                             
@@ -948,14 +1028,14 @@ class NewTracker extends React.Component {
                             {
                         this.state.chartType === 'line'  ?
                         <>
-                        <Col xs={6}>
+                        <Col className='opt-col' xs={6}>
                         <Row className='color-title'><h4>Line Graph Curve</h4></Row>
                         
                             {['straight', 'smooth', 'stepline'].map((entry) =>{
                                 return(
                                     <Row className='line-opt-row ml-auto mr-auto'>
                                     <Form.Check
-                                    className='line-opt-item'
+                                    className='line-opt-item1'
                                     type='radio'
                                     name='line-type'
                                     onChange={() => {this.setCurve(entry)}}
@@ -965,7 +1045,7 @@ class NewTracker extends React.Component {
                             })}
                         
                     </Col>
-                    <Col xs={6}>
+                    <Col className='opt-col' xs={6}>
                         <Row className='color-title'><h4>Line Width</h4></Row>
                         <Row className='line-opt-row'>
                         <Form>
@@ -979,7 +1059,8 @@ class NewTracker extends React.Component {
                         </Form.Group>
                         </Form>
                         </Row>
-                    </Col> </> : 
+                    </Col>
+                    </> : 
                     <></>}
                         </Row>
                     </Col>

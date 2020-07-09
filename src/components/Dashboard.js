@@ -51,7 +51,8 @@ const Styles = styled.div`
     }
     .card {
         text-align:center;
-        height: 30vh;
+        height: 20vh;
+        width: 70%;
         margin-bottom: 2vh;
         border: #ddd solid 1px;
     }
@@ -70,16 +71,16 @@ class Dashboard extends React.Component {
     }
     state={
         inspected: '',
+        show: false,
     }
     renderInspected = () => {
-        if(this.props.inspectedDataset){  
+        if(this.props.inspectedDataset){
             return <InspectPanel />
         } else {
             return <Row className='filler-row'>
             <div className='title-text'> Click an item on the left to inspect it!</div>
             </Row>
         }
-            
     }
     renderQuickView = (datasets) => {
         console.log(datasets)
@@ -92,7 +93,7 @@ class Dashboard extends React.Component {
                 return series.data
             })
             return (
-                <Col xs={5}>
+                <Col xs={4}>
                     <Card 
                     className='card' >
                         <Card.Body>
@@ -101,16 +102,13 @@ class Dashboard extends React.Component {
                             width={entry.width}
                             mode={entry.mode}
                             palette={entry.palette}
-                            quick='true'
+                            quick={true}
                             chartType={entry.chart_type}
                             title={entry.title ? entry.title : "Untitled-Tracker"}
                             categories={names}
                             data={points}
                             /> 
                         </Card.Body>
-                        <Card.Text>
-                            {entry.title}
-                        </Card.Text>
                     </Card>
                 </Col>
         )})}
@@ -129,7 +127,7 @@ class Dashboard extends React.Component {
 
             {this.props.datasets ?
 
-            this.renderQuickView(this.props.datasets)
+            this.renderQuickView(this.props.datasets.reverse())
             
             :   
                 <p>Loading</p>}

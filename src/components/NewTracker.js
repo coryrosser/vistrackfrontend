@@ -4,14 +4,18 @@ import {Row, Col, Form, Button, Modal, ListGroup
     ,Card,Accordion} from 'react-bootstrap'
 import {FaSave} from 'react-icons/fa'
 import styled from 'styled-components'
-import {SwatchesPicker} from 'react-color'
 import UserChart from './UserChart'
+import Load from './Load'
 import {connect} from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
 const Styles = styled.div`
     background: #ebf3f7;
     overflow: hidden;
+    .loader {
+        margin-top: 200px;
+        
+    }
     .opt-col {
         height: 26vh;
         border-right: rgb(2, 195, 154, 0.2) solid 1px;
@@ -659,7 +663,7 @@ class NewTracker extends React.Component {
         () => {
             setTimeout(() => {
                 this.setState({showChart: true})
-            }, 500)
+            }, 1000)
         }
         )
 }
@@ -817,9 +821,9 @@ class NewTracker extends React.Component {
                         title={this.state.title}
                         categories={this.state.categories}
                         data={this.state.data}
-                        file={this.state.file} /> :
+                        file={this.state.file} /> : 
 
-                        <p>loading</p>}
+                        <Load className='loader'/> }
                     </Row>
                     <Row className='options-row'>
                     <Col className='option-col' xs={6}>

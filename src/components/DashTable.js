@@ -18,7 +18,8 @@ const Styles = styled.div`
 class DashTable extends React.Component {
 
     makeTableRows = (data) => {
-        return data.map((entry) => {
+        let dataR = [...data].reverse()
+        return dataR.map((entry) => {
             return (
                 <tr onClick={()=> {
                     this.props.moveToInspect(entry)
@@ -46,7 +47,7 @@ class DashTable extends React.Component {
                 <tbody>
                     {
                     this.props.datasets ?
-                    this.makeTableRows(this.props.datasets.reverse())
+                    this.makeTableRows(this.props.datasets)
                     :
                     <tr>Loading Data...</tr>}
                 </tbody>

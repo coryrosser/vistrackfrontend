@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import UserChart from './UserChart'
+import Load from './Load'
 import DashTable from './DashTable'
 import InspectPanel from './InspectPanel'
 import {Row, Col, Card} from 'react-bootstrap'
@@ -46,6 +47,13 @@ const Styles = styled.div`
         height: 50vh;
 
     }
+    .control-panel1 {
+        margin-top: 3vh;
+        border: #ddd solid 1px;
+        width: 100%;
+        height: 50vh;
+        background:linear-gradient(0deg, rgb(2, 195, 154, 0.5) 0%, rgba(255,255,255,0.0) 30%)
+    }
     .control-panel-row {
         height: 55vh;
     }
@@ -55,6 +63,9 @@ const Styles = styled.div`
         width: 70%;
         margin-bottom: 2vh;
         border: #ddd solid 1px;
+    }
+    .loader {
+        margin-top: 12vh;
     }
 `
 
@@ -84,7 +95,8 @@ class Dashboard extends React.Component {
     }
     renderQuickView = (datasets) => {
         console.log(datasets)
-        return datasets.map(entry => {
+        let dataR = [...datasets].reverse()
+        return dataR.map(entry => {
 
             let names = entry.dataset_series.map((series) => {
                 return series.name
@@ -127,10 +139,10 @@ class Dashboard extends React.Component {
 
             {this.props.datasets ?
 
-            this.renderQuickView(this.props.datasets.reverse())
+            this.renderQuickView(this.props.datasets)
             
             :   
-                <p>Loading</p>}
+            <Load className='loader'/>}
 
             </Row>
             <Row 
@@ -148,7 +160,7 @@ class Dashboard extends React.Component {
                         </div>
                     </Col>
                     <Col xs={5}>
-                        <div className='control-panel'>
+                        <div className='control-panel1'>
                             { this.renderInspected()
                             }
                         </div>

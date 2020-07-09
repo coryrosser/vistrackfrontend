@@ -28,7 +28,7 @@ const Styles = styled.div`
     }
     .btn-list {
         margin-left: 0;
-        height: 15.3vh;
+        height: 16vh;
     }
     .panel-row {
         width: 100%;
@@ -129,10 +129,7 @@ class InspectPanel extends React.Component {
             notes.map(note => {
                 return (
                     <Row className='note'>
-                        <Col>
-                            <h6>{this.props.inspectedDataset.user.first_name + ' ' +
-                            this.props.inspectedDataset.user.last_name}</h6>
-                        </Col>
+                        
                         <Col>
                             <h6>{note.subject}</h6>
                         </Col>

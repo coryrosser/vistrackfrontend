@@ -24,11 +24,7 @@ class UserChart extends React.Component {
           },
           plotOptions: {
             
-          dataLabels: {
-            show: false,
-            name: {show: false},
-            value: {show: false}
-          },
+          
             bar: {
               distributed: true
             },
@@ -65,11 +61,7 @@ class UserChart extends React.Component {
       return (
         <Chart
         options={{
-          dataLabels: {
-            show: false,
-            name: {show: false},
-            value: {show: false}
-          },
+          
           labels: [...this.props.categories],
           theme: {
             mode: this.props.mode,
@@ -149,11 +141,7 @@ class UserChart extends React.Component {
       return (
         <Chart
         options={{
-          dataLabels: {
-            show: false,
-            name: {show: false},
-            value: {show: false}
-          },
+          
           labels: [...this.props.categories],
           theme: {
             mode: this.props.mode,

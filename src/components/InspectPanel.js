@@ -110,7 +110,8 @@ class InspectPanel extends React.Component {
         }
         fetch('https://vistrackbackend.herokuapp.com/notes', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: {'Content-Type': 'application/json',
+            'Accept': 'application/json'},
             body: JSON.stringify(note)
         })
         .then(res => res.json())

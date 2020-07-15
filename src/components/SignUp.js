@@ -120,7 +120,9 @@ class SignUp extends React.Component {
     submitUserSignup = user => {
         fetch('https://vistrackbackend.herokuapp.com/users', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'},
             body: JSON.stringify({user: user})
         })
         .then(res => res.json())

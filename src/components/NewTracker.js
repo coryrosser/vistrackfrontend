@@ -644,7 +644,8 @@ class NewTracker extends React.Component {
         fetch('https://vistrackbackend.herokuapp.com/datasets', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             body: JSON.stringify(obj)
         })

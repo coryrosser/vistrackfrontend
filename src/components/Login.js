@@ -105,7 +105,8 @@ class Login extends React.Component {
         fetch('https://vistrackbackend.herokuapp.com/login', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             body: JSON.stringify({user: user})
         })

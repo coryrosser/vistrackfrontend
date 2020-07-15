@@ -641,7 +641,7 @@ class NewTracker extends React.Component {
             user_id: this.props.current_user.id
             
         }
-        fetch('http://localhost:3000/datasets', {
+        fetch('https://vistrackbackend.herokuapp.com/datasets', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

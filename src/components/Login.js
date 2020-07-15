@@ -102,7 +102,7 @@ class Login extends React.Component {
         this.setState({password: value})
     }
     onLogin = (user) => {
-        fetch('http://localhost:3000/login', {
+        fetch('https://vistrackbackend.herokuapp.com/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

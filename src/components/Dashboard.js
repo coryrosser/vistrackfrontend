@@ -71,7 +71,7 @@ const Styles = styled.div`
 
 class Dashboard extends React.Component {
     componentDidMount() {
-            fetch('http://localhost:3000/datasets')
+            fetch('https://vistrackbackend.herokuapp.com/datasets')
             .then(res => res.json())
             .then(data => {
                 let filteredData = data.filter((entry) => {

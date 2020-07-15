@@ -118,7 +118,7 @@ class SignUp extends React.Component {
         this.setState({role: parseInt(value)})
     }
     submitUserSignup = user => {
-        fetch('http://localhost:3000/users', {
+        fetch('https://vistrackbackend.herokuapp.com/users', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({user: user})

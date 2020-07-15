@@ -108,7 +108,7 @@ class InspectPanel extends React.Component {
             user_id: userId,
             dataset_id: dataId
         }
-        fetch('http://localhost:3000/notes', {
+        fetch('https://vistrackbackend.herokuapp.com/notes', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(note)

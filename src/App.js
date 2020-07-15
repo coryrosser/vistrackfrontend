@@ -24,7 +24,7 @@ class App extends React.Component {
   componentWillMount() {
     localStorage.getItem('user') ?
 
-      fetch(`http://localhost:3000/users/${localStorage.getItem('user')}`)
+      fetch(`https://vistrackbackend.herokuapp.com/users/${localStorage.getItem('user')}`)
       .then(res => res.json())
       .then(user => {
         this.props.setLoggedIn(user)
@@ -38,7 +38,7 @@ class App extends React.Component {
   }
 
   getUsers = () => {
-    fetch('http://localhost:3000/users')
+    fetch('https://vistrackbackend.herokuapp.com/users')
     .then(res => res.json())
     .then(userData => {
       this.props.fetchUsers(userData)
@@ -47,7 +47,7 @@ class App extends React.Component {
   }
   getDataSets = () => {
     if (this.props.current_user) {
-      fetch('http://localhost:3000/datasets')
+      fetch('https://vistrackbackend.herokuapp.com/datasets')
       .then(res => res.json())
       .then(data => {
         let filteredData = data.filter((entry) => {

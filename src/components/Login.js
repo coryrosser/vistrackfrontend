@@ -85,14 +85,22 @@ const Styles = styled.div`
             transition: 0.3s;
         }
     }
+    .red {
+        color: red;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: .25vh;
+    
+    }
 
 `
-
+const URL = 'https://vistrackbackend.herokuapp.com'
 class Login extends React.Component {
-
+    
     state={
         email: '',
         password: '',
+        invalidAttempt: false,
     }
 
     setEmail = (value) => {
@@ -101,8 +109,12 @@ class Login extends React.Component {
     setPassword = (value) => {
         this.setState({password: value})
     }
-    onLogin = (user) => {
-        fetch('https://vistrackbackend.herokuapp.com/login', {
+    onLogin = (email, password) => {
+        let user = {
+            email: email,
+            password: password
+        }
+        fetch('http://localhost:3000/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -112,9 +124,13 @@ class Login extends React.Component {
         })
         .then(res => res.json())
         .then(user => {
-            localStorage.setItem('user', `${user.user.id}` )
-            this.props.sendLogin(user.user)
-            this.props.history.push('/dashboard')
+            if (!user.msg) {
+                localStorage.setItem('user', `${user.user.id}` )
+                this.props.sendLogin(user.user)
+                this.props.history.push('/dashboard')
+            } else {
+                this.setState({invalidAttempt: true})
+            }
         })
     }
 
@@ -126,11 +142,14 @@ class Login extends React.Component {
                     <Card className='form-card'>
                     <p className='form-header'>Sign In</p>
                     <p className='form-header2'>Welcome back to VisTrack</p>
+                    {this.state.invalidAttempt ? 
+                    <p className='red'>Invalid Log In. Try Again...</p>   
+                    : <p className='red'></p>}
                     <Form
                 className='login-form'
             onSubmit={e => {
                 e.preventDefault()
-                this.onLogin(this.state)
+                this.onLogin(this.state.email, this.state.password)
             }}
             >
                 <Form.Group 

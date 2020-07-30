@@ -1,7 +1,7 @@
 # Welcome To VisTrack
 
 ![alt text](https://i.imgur.com/HK5cBhm.png)
-
+[Live Demo](https://vistrack.herokuapp.com/)
 ### Data Entry Made Simple and Engaging
 
 VisTrack is a Data Visualization App made to cut-down some of the tedium
